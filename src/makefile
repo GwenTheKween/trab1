@@ -20,5 +20,5 @@ include $(DEPS)
 %.d:%.cpp
 	$(COMP) -MM $< -o $@
 
-run: $(OUT_NAME)
+run: $(OUT_NAME) $(OBJS)
 	./$(OUT_NAME)
