@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include "labirinto.h"
 
 int main(){
 	printf("hello world!\n");
