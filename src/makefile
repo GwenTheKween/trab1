@@ -3,8 +3,8 @@ COMP_FLAGS = -c -g -O3
 LINK_FLAGS = -o
 OUT_NAME = trab1
 SRC = $(wildcard *.cpp)
-OBJ = $(SRC.cpp=.o)
-DEPS = $(SRC.cpp=.d)
+OBJ = $(SRC:.cpp=.o)
+DEPS = $(SRC:.cpp=.d)
 
 all: $(OBJ) $(DEPS)
 	$(COMP) $(LINK_FLAGS) $(OUT_NAME) $(OBJ)
@@ -15,7 +15,7 @@ clean:
 include $(DEPS)
 
 %.o:%.cpp
-	$(COMP) $< -o $@
+	$(COMP) $< $(COMP_FLAGS) -o $@
 
 %.d:%.cpp
 	$(COMP) -MM $< -o $@
