@@ -4,27 +4,33 @@
 #include <stdio.h>
 #include <vector>
 
-enum{
+enum MAP_INFO{
 	FREE_SPACE,
 	WALL,
 	BEGIN,
-	END
+	END,
+	ERROR
 };
 
 class labirinto{
 	int height, width;
-	std::vector<std::vector<int> > map;
+	std::vector<std::vector<MAP_INFO> > map;
+private:
+	void resize(int h,int w);
 public:
 
-	labirinto(int w, int h);
+	labirinto(int h, int w);
+	labirinto(char* filename);
 	~labirinto(){
 		height = 0;
 		width = 0;
 	}
 
-	std::vector<int>& operator [](int i){
+	std::vector<MAP_INFO>& operator [](int i){
 		return map[i];
 	}
+
+	void print();
 };
 
 #endif

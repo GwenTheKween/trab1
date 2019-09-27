@@ -1,6 +1,7 @@
 #include "labirinto.h"
 
 int main(){
-	printf("hello world!\n");
+	labirinto l(2,3);
+	l.print();
 	return 0;
 }
