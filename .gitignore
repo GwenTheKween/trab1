@@ -1,3 +1,5 @@
 trab1
 *.o
 .ycm*
+peda-session*
+.gdb_history

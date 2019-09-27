@@ -44,13 +44,13 @@ labirinto::labirinto(int h, int w)
 
 labirinto::labirinto(char* filename){
 	FILE* input;
-	input = fopen(filename, "w");
+	input = fopen(filename, "r");
 	if(! input){
 		printf("Unable to open file");
 	}else{
 		int w,h;
 		char c;
-		fscanf(input,"%d %d",&w,&h);
+		fscanf(input,"%d %d",&h,&w);
 		resize(h,w);
 		for(int i = 0; i<h; i++){
 			for(int j = 0; j<w; j++){
