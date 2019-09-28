@@ -13,6 +13,7 @@ int main(int argc, char **argv){
 
 		labirinto l( atoi(argv[2]), atoi(argv[3]));
 		l.gera_labirinto_manual();
+		l.print();
 	}else if(argv[1][0] == '2'){//Opcao de criar labirinto automatico
 		if(argc < 4){
 			printf("faltam parametros, use: %s 1 <height> <width>\n", argv[0]);
