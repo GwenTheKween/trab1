@@ -7,7 +7,7 @@ int main(int argc, char **argv){
 	}
 	if(argv[1][0] == '1'){//Opcao de criar labirinto manualmente
 		if(argc < 4){
-			printf("faltam parametros, use: %s 1 <altura matriz> <largura matriz>\n", argv[0]);
+			printf("faltam parametros, use: %s 1 <height> <weidth>\n", argv[0]);
 			return 0;
 		}
 
@@ -15,7 +15,7 @@ int main(int argc, char **argv){
 		l.gera_labirinto_manual();
 	}else if(argv[1][0] == '2'){//Opcao de criar labirinto automatico
 		if(argc < 4){
-			printf("faltam parametros, use: %s 1 <altura matriz> <largura matriz>\n", argv[0]);
+			printf("faltam parametros, use: %s 1 <height> <width>\n", argv[0]);
 			return 0;
 		}
 
