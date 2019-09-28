@@ -19,7 +19,7 @@ class labirinto{
 private:
 	void resize(int h,int w);
 
-	/*Funcao que escreve o labirinto criado em um arquivo*/
+	/*Funcao que escreve o labirinto criado em um arquivo */
 	void write_labirinto();
 
 	/*Funcao que verifica quantas paredes existe a partir de uma posicao*/
