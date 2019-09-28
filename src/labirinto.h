@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <vector>
+#include <stdlib.h>
 
 enum MAP_INFO{
 	FREE_SPACE,
@@ -21,7 +22,7 @@ public:
 
 	labirinto(int h, int w);
 	labirinto(char* filename);
-		~labirinto(){
+	~labirinto(){
 		height = 0;
 		width = 0;
 	}
