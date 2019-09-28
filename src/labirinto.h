@@ -21,6 +21,8 @@ public:
 
 	labirinto(int h, int w);
 	labirinto(char* filename);
+	gera_labirinto_manual();
+	gera_labirinto_automatico();
 	~labirinto(){
 		height = 0;
 		width = 0;
