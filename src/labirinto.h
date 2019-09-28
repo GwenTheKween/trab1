@@ -18,6 +18,12 @@ class labirinto{
 	std::vector<std::vector<MAP_INFO> > map;
 private:
 	void resize(int h,int w);
+
+	/*Funcao que escreve o labirinto criado em um arquivo*/
+	void write_labirinto();
+
+	/*Funcao que verifica quantas paredes existe a partir de uma posicao*/
+	int check_num_wall(int column, int line);
 public:
 
 	labirinto(int h, int w);
