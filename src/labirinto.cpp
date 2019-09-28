@@ -86,9 +86,9 @@ void labirinto::gera_labirinto_automatico(){
 
 }
 
-/* Le a entrada do usuario e desenha uma sequencia de quadrados(reta)
+/* Le a entrada do usuario e desenha uma reta
  * no labirinto, que representa as paredes. Continua enquanto nao for digitado valor NEGATIVO no inicio.
- * Para desenhar uma sequencia de quadrados o usuario repassa 2 parametros: 
+ * Para desenhar a reta o usuario repassa 2 parametros: 
  * Posicao inicial da parede: <coluna> <linha>
  * Posicao final da parede: <coluna> <linha>
  * Restricao: Nao faz reta na diagonal*/
