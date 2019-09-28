@@ -1,5 +1,5 @@
 #include "labirinto.h"
-
+#include <iostream>
 //=================================================================================================================
 //Funcoes internas, para facilitar a conversao.
 
@@ -86,6 +86,32 @@ void labirinto::gera_labirinto_automatico(){
 
 }
 
+/* Le a entrada do usuario e desenha uma sequencia de quadrados(reta)
+ * no labirinto, que representa as paredes. Continua enquanto nao for digitado valor NEGATIVO no inicio.
+ * Para desenhar uma sequencia de quadrados o usuario repassa 2 parametros: 
+ * Posicao inicial da parede: <coluna> <linha>
+ * Posicao final da parede: <coluna> <linha>
+ * Restricao: Nao faz reta na diagonal*/
 void labirinto::gera_labirinto_manual(){
+	int cInitial, lInitial, cEnd, lEnd;
+	printf("informe:  <coluna Inicial> <linha Inicial> <coluna final> <linha final>\n");
+	while(scanf("%d", &cInitial) && cInitial >= 0){
+		scanf("%d %d %d", &lInitial, &cEnd, &lEnd);
+		if(cInitial >= height || cEnd >= height || lInitial >= width || lEnd >= width
+			|| cEnd < 0 || lInitial < 0 || lEnd < 0){
+			printf("Esses parametros violam as propriedades do labirinto.\n");
+		}else if(cInitial == cEnd){
+			int inicio, fim;
+			lInitial < lEnd ? inicio = lInitial, fim = lEnd: inicio = lEnd, fim = lInitial;
+			
+			for(int j = inicio; j <= fim; j++)
+				map[cInitial][j] = WALL;
+		}else if(lInitial == lEnd){
+			int inicio, fim;
+			cInitial < cEnd? inicio = cInitial, fim = cEnd: inicio = cEnd, fim =  cInitial;
 
+			for(int i = inicio; i <= fim; i++)
+				map[i][lInitial] = WALL;
+		}
+	}
 }
