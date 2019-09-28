@@ -21,9 +21,7 @@ public:
 
 	labirinto(int h, int w);
 	labirinto(char* filename);
-	gera_labirinto_manual();
-	gera_labirinto_automatico();
-	~labirinto(){
+		~labirinto(){
 		height = 0;
 		width = 0;
 	}
@@ -31,7 +29,8 @@ public:
 	std::vector<MAP_INFO>& operator [](int i){
 		return map[i];
 	}
-
+	void gera_labirinto_manual();
+	void gera_labirinto_automatico();
 	void print();
 };
 
