@@ -81,3 +81,11 @@ void labirinto::print(){
 		printf("\n");
 	}
 }
+
+void labirinto::gera_labirinto_automatico(){
+
+}
+
+void labirinto::gera_labirinto_manual(){
+
+}
