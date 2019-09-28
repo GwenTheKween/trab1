@@ -1,5 +1,5 @@
 #include "labirinto.h"
-#include <iostream>
+#include <time.h>
 //=================================================================================================================
 //Funcoes internas, para facilitar a conversao.
 
@@ -82,8 +82,54 @@ void labirinto::print(){
 	}
 }
 
-void labirinto::gera_labirinto_automatico(){
+void labirinto::write_labirinto(){
+	FILE* arq;
+}
 
+int labirinto::check_num_wall(int column, int line){
+	int wall = 0;
+	wall += (column-1 >= 0 && (map[column-1][line] == WALL ||
+			map[column-1][line] == BEGIN || 
+			map[column-1][line] == END) );
+	
+	wall += (line-1 >= 0 && (map[column][line-1] == WALL ||
+			map[column][line-1] == BEGIN || 
+			map[column][line-1] == END) );
+
+	wall += (column+1 >= 0 && (map[column+1][line] == WALL ||
+			map[column+1][line] == BEGIN || 
+			map[column+1][line] == END) );
+
+	wall += (line+1 >= 0 && (map[column][line+1] == WALL ||
+			map[column][line+1] == BEGIN || 
+			map[column][line+1] == END) );
+
+	return wall;
+}
+
+void labirinto::gera_labirinto_automatico(){
+	int column, line;
+	int numWall, numMaxWall = 10;
+
+	srand(time(NULL));
+
+	/* Pega um ponto aleatorio, verifica se tem como incluir paredes
+	 * A partir dele. Se ocorrer de não poder */
+	for(int count = 0; count < 5; ){
+		column = rand() % height;
+		line = rand() % width;
+
+		if(check_num_wall(column, line) >= 1)
+			count++;
+		else{
+			//Pega um numero aleatorio de paredes para tentar preencher
+			numWall = rand()%numMaxWall;		
+			for(int i = 0; i < numWall; i++){
+				//fazer...
+				//verificar posicao e preencher, mudando a linha e posicao...
+			}
+		}
+	}
 }
 
 /* Le a entrada do usuario e desenha uma reta
@@ -111,8 +157,9 @@ void labirinto::gera_labirinto_manual(){
 				fim = lInitial;
 			}
 
-			for(int j = inicio; j <= fim; j++)
+			for(int j = inicio; j <= fim; j++){
 				map[cInitial][j] = WALL;
+			}
 		}else if(lInitial == lEnd){
 			if(cInitial < cEnd){
 				inicio = cInitial;
@@ -122,9 +169,14 @@ void labirinto::gera_labirinto_manual(){
 			       	fim =  cInitial;
 			}
 
-			for(int i = inicio; i <= fim; i++)
+			for(int i = inicio; i <= fim; i++){
 				map[i][lInitial] = WALL;
+			}
 		}
 		print();
+		printf("\n");
 	}
+
+	write_labirinto();
 }
+
