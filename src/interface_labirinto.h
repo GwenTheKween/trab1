@@ -24,7 +24,7 @@ class InterfaceLabirinto {
     InterfaceLabirinto(const InterfaceLabirinto& outro);
     ~InterfaceLabirinto();
 
-    void definiPosição(int y , int x);
+    void definiPosicao(int y , int x);
 
 
 
