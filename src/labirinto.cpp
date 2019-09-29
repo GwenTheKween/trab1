@@ -58,6 +58,7 @@ labirinto::labirinto(char* filename){
 				map[i][j] = charToMap_info(c);
 			}
 		}
+		fclose(input);
 	}
 }
 
@@ -83,7 +84,22 @@ void labirinto::print(){
 }
 
 void labirinto::write_labirinto(char* filename){
-	FILE* arq;
+	FILE* output;
+	output = fopen(filename, "w");
+	if(! output){
+		printf("Unable to open file");
+	}else {
+		char c;
+		fprintf(output, "%d %d\n", height, width);
+		for(int i = 0; i < height; i++){
+			for(int j = 0; j < width; j++){
+				c = map_infoToChar(map[i][j]);
+				fprintf(output, "%c", c);
+			}
+			fprintf(output, "\n");
+		}
+		fclose(output);
+	}
 }
 
 int labirinto::check_num_wall(int column, int line){
