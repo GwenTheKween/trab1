@@ -82,7 +82,7 @@ void labirinto::print(){
 	}
 }
 
-void labirinto::write_labirinto(){
+void labirinto::write_labirinto(char* filename){
 	FILE* arq;
 }
 
@@ -111,7 +111,7 @@ bool labirinto::check_start_end(int column, int line){
 	return (map[column][line] == END || map[column][line] == BEGIN);
 }
 
-void labirinto::gera_labirinto_automatico(){
+void labirinto::gera_labirinto_automatico(char* filename){
 	int column, line, direcao;
 	int numWall, numMaxWall = height*width;
 
@@ -168,6 +168,8 @@ void labirinto::gera_labirinto_automatico(){
 
 	print();
 	printf("\n");
+	write_labirinto(filename);
+
 }
 
 /* Le a entrada do usuario e desenha uma reta
@@ -176,7 +178,7 @@ void labirinto::gera_labirinto_automatico(){
  * Posicao inicial da parede: <coluna> <linha>
  * Posicao final da parede: <coluna> <linha>
  * Restricao: Nao faz reta na diagonal*/
-void labirinto::gera_labirinto_manual(){
+void labirinto::gera_labirinto_manual(char* filename){
 	int cInitial, lInitial, cEnd, lEnd;
 	int inicio, fim;
 	printf("informe:  <coluna Inicial> <linha Inicial> <coluna final> <linha final>\n");
@@ -215,6 +217,6 @@ void labirinto::gera_labirinto_manual(){
 		printf("\n");
 	}
 
-	write_labirinto();
+	write_labirinto(filename);
 }
 
