@@ -20,10 +20,12 @@ private:
 	void resize(int h,int w);
 
 	/*Funcao que escreve o labirinto criado em um arquivo */
-	void write_labirinto();
+	void write_labirinto(char* filename);
 
 	/*Funcao que verifica quantas paredes existe a partir de uma posicao*/
 	int check_num_wall(int column, int line);
+
+	bool check_start_end(int column, int line);
 public:
 
 	labirinto(int h, int w);
@@ -36,8 +38,8 @@ public:
 	std::vector<MAP_INFO>& operator [](int i){
 		return map[i];
 	}
-	void gera_labirinto_manual();
-	void gera_labirinto_automatico();
+	void gera_labirinto_manual(char* filename);
+	void gera_labirinto_automatico(char* filename);
 	void print();
 };
 
