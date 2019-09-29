@@ -96,40 +96,78 @@ int labirinto::check_num_wall(int column, int line){
 			map[column][line-1] == BEGIN || 
 			map[column][line-1] == END) );
 
-	wall += (column+1 >= 0 && (map[column+1][line] == WALL ||
+	wall += (column+1 < height && (map[column+1][line] == WALL ||
 			map[column+1][line] == BEGIN || 
 			map[column+1][line] == END) );
 
-	wall += (line+1 >= 0 && (map[column][line+1] == WALL ||
+	wall += (line+1 < width && (map[column][line+1] == WALL ||
 			map[column][line+1] == BEGIN || 
 			map[column][line+1] == END) );
 
 	return wall;
 }
 
+bool labirinto::check_start_end(int column, int line){
+	return (map[column][line] == END || map[column][line] == BEGIN);
+}
+
 void labirinto::gera_labirinto_automatico(){
-	int column, line;
-	int numWall, numMaxWall = 10;
+	int column, line, direcao;
+	int numWall, numMaxWall = height*width;
 
 	srand(time(NULL));
-
-	/* Pega um ponto aleatorio, verifica se tem como incluir paredes
-	 * A partir dele. Se ocorrer de não poder */
-	for(int count = 0; count < 5; ){
-		column = rand() % height;
+	/* Seleciona um ponto aleatorio, verifica se tem como incluir paredes
+	 * A partir dele*/
+	for(int count = 0; count < 9; ){
+		column =  rand() % height;
 		line = rand() % width;
-
-		if(check_num_wall(column, line) >= 1)
+		if(check_num_wall(column, line) >= 1 || check_start_end(column, line)){
 			count++;
-		else{
+		}else{
+			map[column][line] = WALL;
+
 			//Pega um numero aleatorio de paredes para tentar preencher
-			numWall = rand()%numMaxWall;		
+			numWall = rand()%numMaxWall;
 			for(int i = 0; i < numWall; i++){
-				//fazer...
-				//verificar posicao e preencher, mudando a linha e posicao...
+				direcao = rand() % 4;
+
+				//Verifica na nova posicao quantas paredes tem
+				//Se tiver apenas uma(posicao anterior da parede)
+				//Entao inclui a parede
+				//A nova posicao nao vai ateh as bordas do labirinto
+				if(direcao == 0 && column-1 > 0 && check_num_wall(column-1, line) <= 1){ //up
+					column = column-1;
+					map[column][line] = WALL;
+				}else if(direcao == 1 && line-1 > 0 && check_num_wall(column, line-1) <= 1){//left
+					line = line-1;
+					map[column][line] = WALL;
+				}else if(direcao == 2 && line+1 < width-1 && check_num_wall(column, line+1) <= 1){//right
+					line = line+1;
+					map[column][line] = WALL;
+				}else if(direcao == 3 && column+1 < height-1 && check_num_wall(column+1, line) <= 1){//down
+					column = column+1;
+					map[column][line] = WALL;
+				}
 			}
 		}
 	}
+
+	do{
+		column = rand() % height;
+		line = rand() % width;
+		if(map[column][line] == FREE_SPACE)
+			map[column][line] = BEGIN;
+	}while(map[column][line] != BEGIN);
+
+	do{
+		column = rand() % height;
+		line = rand() % width;
+		if(map[column][line] == FREE_SPACE)
+			map[column][line] = END;
+	}while(map[column][line] != END);
+
+	print();
+	printf("\n");
 }
 
 /* Le a entrada do usuario e desenha uma reta
