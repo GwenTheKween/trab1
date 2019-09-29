@@ -30,6 +30,9 @@ public:
 		return map[i];
 	}
 
+    int getHeight();
+    int getWidth();
+
 	void print();
 };
 

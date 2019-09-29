@@ -81,3 +81,11 @@ void labirinto::print(){
 		printf("\n");
 	}
 }
+
+int labirinto::getWidth(){
+    return this->width;
+}
+
+int labirinto::getHeight(){
+    return this->height;
+}
