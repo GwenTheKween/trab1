@@ -5,6 +5,7 @@
 #include <ncurses.h>
 
 class labirinto;
+class WINDOW_desctructor;
 
 class InterfaceLabirinto {
     // esse argumento é para especificar a posição do labirinto na tela.
@@ -14,7 +15,7 @@ class InterfaceLabirinto {
     // esse armazena o labirinto que está sendo mostrado.
     labirinto &lab;
     // esse daqui é a janela do ncurses.
-    std::unique_ptr<WINDOW> window;
+    std::unique_ptr<WINDOW , WINDOW_desctructor> window;
 
 
     public:
