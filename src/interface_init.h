@@ -3,11 +3,11 @@
 
 // classe que vai cuidar da inicialização do ncurses.
 
-class InterfaceGeral{
+class InterfaceInit{
     public:
 
-    InterfaceGeral();
-    ~InterfaceGeral();
+    InterfaceInit();
+    ~InterfaceInit();
 };
 
 #endif /* ifndef __INTERFACE_GERAL__H__ */

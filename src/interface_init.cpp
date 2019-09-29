@@ -1,7 +1,7 @@
-#include "interface_geral.h"
+#include "interface_init.h"
 #include <ncurses.h>
 
-InterfaceGeral::InterfaceGeral(){
+InterfaceInit::InterfaceInit(){
     initscr();
     if(has_colors() == TRUE){
         start_color();
@@ -9,6 +9,6 @@ InterfaceGeral::InterfaceGeral(){
 
 }
 
-InterfaceGeral::~InterfaceGeral(){
+InterfaceInit::~InterfaceInit(){
     endwin();
 }
