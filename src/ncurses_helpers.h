@@ -4,6 +4,9 @@
 #include <ncurses.h>
 
 class WINDOW_desctructor {
+
+    public:
+
     WINDOW_desctructor();
     void operator()(WINDOW *p);
 };
