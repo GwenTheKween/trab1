@@ -3,9 +3,9 @@
 
 #include <memory>
 #include <ncurses.h>
+#include "ncurses_helpers.h"
 
 class labirinto;
-class WINDOW_desctructor;
 
 class InterfaceLabirinto {
     // esse argumento é para especificar a posição do labirinto na tela.
