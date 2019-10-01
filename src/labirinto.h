@@ -5,6 +5,7 @@
 #include <vector>
 #include <stdlib.h>
 #include <time.h>
+#include "parede.h"
 
 enum MAP_INFO{
 	FREE_SPACE,
@@ -36,14 +37,24 @@ public:
 		width = 0;
 	}
 
-	std::vector<MAP_INFO>& operator [](int i){
+	std::vector<MAP_INFO> operator [](int i){
 		return map[i];
 	}
+
+	int operator [](std::pair<int, int> p){
+		return map[p.first][p.second];
+	}
+
 	void gera_labirinto_manual(char* filename);
 	void gera_labirinto_automatico(char* filename);
 
+	void nova_geracao(int wallCount);
+
     int getHeight();
     int getWidth();
+	bool has_wall(int x, int y);
+
+	parede create_wall(std::pair<int, int> start, std::pair<int, int> end, int dir);
 
 	void print();
 };
