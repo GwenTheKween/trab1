@@ -35,6 +35,10 @@ InterfaceLabirinto::InterfaceLabirinto(const InterfaceLabirinto &outro) : coordL
 
 void InterfaceLabirinto::atualizarMapa(){
 
+    wattron(this->window.get() , COLOR_PAIR(BLACK_WHITE));
+    wborder(this->window.get() , ' ' , ' ', ' ', ' ', ' ', ' ' , ' ' , ' ');
+    wattroff(this->window.get() , COLOR_PAIR(BLACK_WHITE));
+
     for(int i =0 ; i < this->lab.getHeight() ; i++){
         wmove(this->window.get() , i+1 , 1);
         auto & linha = this->lab[i];
@@ -43,6 +47,9 @@ void InterfaceLabirinto::atualizarMapa(){
             this->printaCaracter(linha[j]);
         }
     }
+
+
+
     prefresh(this->window.get() , this->coordLeftUp.second ,this->coordLeftUp.first , 0 , 0 , this->size.second , this->size.first);
     wgetch(this->window.get());
 }
