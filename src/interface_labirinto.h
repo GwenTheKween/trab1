@@ -5,6 +5,7 @@
 #include <ncurses.h>
 #include "ncurses_helpers.h"
 #include "labirinto.h"
+#include "interface_init.h"
 
 
 class InterfaceLabirinto {
@@ -16,6 +17,8 @@ class InterfaceLabirinto {
     labirinto &lab;
     // esse daqui é a janela do ncurses.
     std::unique_ptr<WINDOW , WINDOW_desctructor> window;
+    
+    std::pair<int , int > coordConerIntern;
 
     private:
 
@@ -27,7 +30,7 @@ class InterfaceLabirinto {
     InterfaceLabirinto(const InterfaceLabirinto& outro);
     ~InterfaceLabirinto();
 
-    void definiPosicao(int y , int x);
+    void definiPosicao(int y , int x , COLOR_MAPS color);
 
     void atualizarMapa();
 

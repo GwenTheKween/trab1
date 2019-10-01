@@ -1,5 +1,4 @@
 #include "interface_labirinto.h"
-#include "interface_init.h"
 #include "labirinto.h"
 #include "ncurses_helpers.h"
 
@@ -29,7 +28,7 @@ InterfaceLabirinto::InterfaceLabirinto(int leftUpX, int leftUpY   , int height ,
 InterfaceLabirinto::~InterfaceLabirinto(){
 }
 
-InterfaceLabirinto::InterfaceLabirinto(const InterfaceLabirinto &outro) : coordLeftUp(outro.coordLeftUp) , size(outro.size) , lab(outro.lab), window(newpad(lab.getHeight() , lab.getWidth()) , WINDOW_desctructor())  {
+InterfaceLabirinto::InterfaceLabirinto(const InterfaceLabirinto &outro) : coordLeftUp(outro.coordLeftUp) , size(outro.size) , lab(outro.lab), window(newpad(lab.getHeight() , lab.getWidth()) , WINDOW_desctructor()) , coordConerIntern(0,0)  {
     this->atualizarMapa();
 }
 
@@ -54,5 +53,11 @@ void InterfaceLabirinto::atualizarMapa(){
     wgetch(this->window.get());
 }
 
-void InterfaceLabirinto::definiPosicao(int y , int x ){
+void InterfaceLabirinto::definiPosicao(int y , int x  ,COLOR_MAPS color ){
+    wattron(this->window.get() , COLOR_PAIR(color));
+    wmove(this->window.get() , y+1 ,x+1);
+    this->printaCaracter(this->lab[y][x]);
+    wattroff(this->window.get() , COLOR_PAIR(color));
+    prefresh(this->window.get() , this->coordLeftUp.second ,this->coordLeftUp.first , 0 , 0 , this->size.second , this->size.first);
+    wgetch(this->window.get());
 }
