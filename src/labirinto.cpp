@@ -234,3 +234,10 @@ void labirinto::gera_labirinto_manual(char* filename){
 	write_labirinto(filename);
 }
 
+int labirinto::getWidth(){
+    return this->width;
+}
+
+int labirinto::getHeight(){
+    return this->height;
+}

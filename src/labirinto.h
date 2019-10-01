@@ -41,6 +41,10 @@ public:
 	}
 	void gera_labirinto_manual(char* filename);
 	void gera_labirinto_automatico(char* filename);
+
+    int getHeight();
+    int getWidth();
+
 	void print();
 };
 
