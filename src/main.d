@@ -1,1 +1,1 @@
-main.o: main.cpp labirinto.h
+main.o: main.cpp labirinto.h parede.h
