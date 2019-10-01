@@ -1,5 +1,4 @@
 #include "labirinto.h"
-#include <time.h>
 //=================================================================================================================
 //Funcoes internas, para facilitar a conversao.
 
@@ -131,7 +130,6 @@ void labirinto::gera_labirinto_automatico(char* filename){
 	int column, line, direcao;
 	int numWall, numMaxWall = height*width;
 
-	srand(time(NULL));
 	/* Seleciona um ponto aleatorio, verifica se tem como incluir paredes
 	 * A partir dele*/
 	for(int count = 0; count < 9; ){

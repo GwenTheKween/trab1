@@ -14,6 +14,7 @@ int main(int argc, char **argv){
 		l.gera_labirinto_manual(argv[2]);
 		l.print();
 	}else if(argv[1][0] == '2'){//Opcao de criar labirinto automatico
+		srand(time(NULL));
 		printf("digite numero de colunas e linhas\n");
 		scanf("%d %d", &height, &width);
 		labirinto l( height, width);

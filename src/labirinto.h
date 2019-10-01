@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <vector>
 #include <stdlib.h>
+#include <time.h>
 
 enum MAP_INFO{
 	FREE_SPACE,
