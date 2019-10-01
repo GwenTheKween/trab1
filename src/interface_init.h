@@ -10,7 +10,8 @@ enum COLOR_MAPS{
     BLUE_GREEN,
     GREEN_BLUE,
     BLUE_BLACK,
-    GREEN_BLACK
+    GREEN_BLACK,
+    BLACK_WHITE
 };
 
 class InterfaceInit{

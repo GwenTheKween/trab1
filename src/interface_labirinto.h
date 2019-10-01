@@ -4,8 +4,8 @@
 #include <memory>
 #include <ncurses.h>
 #include "ncurses_helpers.h"
+#include "labirinto.h"
 
-class labirinto;
 
 class InterfaceLabirinto {
     // esse argumento é para especificar a posição do labirinto na tela.
@@ -17,6 +17,9 @@ class InterfaceLabirinto {
     // esse daqui é a janela do ncurses.
     std::unique_ptr<WINDOW , WINDOW_desctructor> window;
 
+    private:
+
+    char printaCaracter(MAP_INFO value);
 
     public:
 
@@ -25,6 +28,8 @@ class InterfaceLabirinto {
     ~InterfaceLabirinto();
 
     void definiPosicao(int y , int x);
+
+    void atualizarMapa();
 
 
 
