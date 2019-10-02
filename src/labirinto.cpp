@@ -235,7 +235,8 @@ void labirinto::gera_labirinto_manual(char* filename){
 }
 
 void labirinto::nova_geracao(int wallCount){
-	std::pair<int,int> start(rand()%width, rand()%height), end(rand()%width, rand()%height);
+	//o inicio sempre estara no topo a esquerda, e o final no canto inferior esquerdo
+	std::pair<int,int> start(rand()%(width/5), rand()%(height/5)), end(rand()%(width/5) + 4*width/5, rand()%(height/5) + 4*height/5);
 
 	std::vector<parede> walls;
 
