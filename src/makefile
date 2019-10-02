@@ -22,3 +22,6 @@ include $(DEPS)
 
 run: $(OUT_NAME) $(OBJS)
 	./$(OUT_NAME)
+
+debug: clean all
+	gdb ./$(OUT_NAME)
