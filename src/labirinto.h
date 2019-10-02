@@ -52,9 +52,11 @@ public:
 
     int getHeight();
     int getWidth();
-	bool has_wall(int x, int y);
+	bool isFree(int x, int y);
 
-	parede create_wall(std::pair<int, int> start, std::pair<int, int> end, int dir);
+	void setStart(std::pair<int, int> coord){map[coord.first][coord.second] = BEGIN;}
+	void setEnd(std::pair<int,int> coord){map[coord.first][coord.second] = END;}
+	parede create_wall(std::pair<int, int> start, std::pair<int, int> end);
 
 	void print();
 };

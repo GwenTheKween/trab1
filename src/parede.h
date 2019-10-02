@@ -13,7 +13,7 @@ public:
 		if(end < start){
 			std::pair<int, int> tmp(end);
 			end = start;
-			start = end;
+			start = tmp;
 		}
 		if(start.first== end.first){
 			direction = VERTICAL;
@@ -22,6 +22,11 @@ public:
 		}
 	}
 	parede(int xs, int ys, int xe, int ye): start(xs,ys), end(xe,ye){
+		if(end < start){
+			std::pair<int, int> tmp(end);
+			end = start;
+			start = tmp;
+		}
 		if(start.first== end.first){
 			direction = VERTICAL;
 		}else{
