@@ -28,7 +28,7 @@ InterfaceLabirinto::InterfaceLabirinto(int leftUpX, int leftUpY   , int height ,
 InterfaceLabirinto::~InterfaceLabirinto(){
 }
 
-InterfaceLabirinto::InterfaceLabirinto(const InterfaceLabirinto &outro) : coordLeftUp(outro.coordLeftUp) , size(outro.size) , lab(outro.lab), window(newpad(lab.getHeight() , lab.getWidth()) , WINDOW_desctructor()) , coordConerIntern(0,0)  {
+InterfaceLabirinto::InterfaceLabirinto(const InterfaceLabirinto &outro) : coordLeftUp(outro.coordLeftUp) , size(outro.size) , lab(outro.lab), window(newpad(lab.getHeight() , lab.getWidth()) , WINDOW_desctructor()) , coordLast(outro.coordLast)  {
     this->atualizarMapa();
 }
 
@@ -44,20 +44,43 @@ void InterfaceLabirinto::atualizarMapa(){
         for(int j = 0 ; j < this->lab.getWidth() ; j++){
             //attron(COLOR_PAIR(1));
             this->printaCaracter(linha[j]);
+            if(linha[j] == BEGIN){
+                this->coordLast = std::make_pair(j+1 , i+1);
+            }
         }
     }
 
 
-
-    prefresh(this->window.get() , this->coordLeftUp.second ,this->coordLeftUp.first , 0 , 0 , this->size.second , this->size.first);
+    this->refresh();
     wgetch(this->window.get());
 }
 
 void InterfaceLabirinto::definiPosicao(int y , int x  ,COLOR_MAPS color ){
     wattron(this->window.get() , COLOR_PAIR(color));
     wmove(this->window.get() , y+1 ,x+1);
+    this->coordLast.first = x;
+    this->coordLast.second = y;
     this->printaCaracter(this->lab[y][x]);
-    wattroff(this->window.get() , COLOR_PAIR(color));
-    prefresh(this->window.get() , this->coordLeftUp.second ,this->coordLeftUp.first , 0 , 0 , this->size.second , this->size.first);
+    this->refresh();
     wgetch(this->window.get());
+}
+
+void InterfaceLabirinto::refresh() {
+    int mh = this->size.second / 2;
+    int mw = this->size.first / 2;
+    int cornerLeUpY = 0;
+    int cornerLeUpX = 0;
+    if((this->lab.getWidth()+2 > this->size.first) && (this->coordLast.first - mw > 0)){
+        cornerLeUpX = this->coordLast.first - mw;
+        if((cornerLeUpX + this->size.first ) > (this->lab.getWidth()+2)){
+            cornerLeUpX = this->lab.getWidth() - this->size.first + 2;
+        }
+    }
+    if( (this->lab.getHeight()+2 > this->size.second) && (this->coordLast.second - mh > 0) ){
+        cornerLeUpY = this->coordLast.second - mh;
+        if((cornerLeUpY + this->size.second) > (this->lab.getHeight() + 2)){
+            cornerLeUpY -= this->lab.getHeight() - this->size.second + 2;
+        }
+    }
+    prefresh(this->window.get() , cornerLeUpY , cornerLeUpX , this->coordLeftUp.second , this->coordLeftUp.first , this->coordLeftUp.second + this->size.second  -1, this->coordLeftUp.first + this->size.first - 1);
 }

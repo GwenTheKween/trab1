@@ -18,7 +18,7 @@ class InterfaceLabirinto {
     // esse daqui é a janela do ncurses.
     std::unique_ptr<WINDOW , WINDOW_desctructor> window;
     
-    std::pair<int , int > coordConerIntern;
+    std::pair<int , int > coordLast;
 
     private:
 
@@ -33,6 +33,8 @@ class InterfaceLabirinto {
     void definiPosicao(int y , int x , COLOR_MAPS color);
 
     void atualizarMapa();
+
+    void refresh();
 
 
 
