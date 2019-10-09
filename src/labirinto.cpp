@@ -82,7 +82,7 @@ void labirinto::print(){
 	}
 }
 
-void labirinto::write_labirinto(char* filename){
+void labirinto::write_labirinto(const char* filename){
 	FILE* output;
 	output = fopen(filename, "w");
 	if(! output){

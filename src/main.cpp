@@ -1,13 +1,28 @@
 #include "labirinto.h"
+#include <iostream>
+#include <string>
 
 int main(int argc, char **argv){
 	int height, width;
+	srand(time(NULL));
 	if(argc < 2){
 		//printf("uso: %s <arquivo>\n",argv[0]);
 		//ESTA AQUI PARA DEBUG
-		labirinto l(10,10);
-		l.nova_geracao(2);
+		int h,w;
+		printf("height and width?");
+		scanf(" %d %d",&h,&w);
+		labirinto l(h,w);
+		printf("how many walls? ");
+		scanf(" %d",&h);
+		l.nova_geracao(h);
 		l.print();
+		printf("would you like to print it? If so enter the name, otherwise, enter no\n");
+		std::string name, no="no";
+		std::cin >> name;
+		if(name != no){
+			name = "../mapas/" + name;
+			l.write_labirinto(name.c_str());
+		}
 		return 0;
 	}
 
@@ -18,7 +33,6 @@ int main(int argc, char **argv){
 		l.gera_labirinto_manual(argv[2]);
 		l.print();
 	}else if(argv[1][0] == '2'){//Opcao de criar labirinto automatico
-		srand(time(NULL));
 //  	printf("digite numero de colunas e linhas\n");
 //  	scanf("%d %d", &height, &width);
 		labirinto l( 50, 50);
