@@ -24,7 +24,7 @@ char InterfaceLabirinto::printaCaracter(MAP_INFO value){
 
 
 
-InterfaceLabirinto::InterfaceLabirinto(int leftUpX, int leftUpY   , int height , int width , labirinto &lab) : coordLeftUp(leftUpX , leftUpY) , size(width , height) , lab(lab), window(newpad(lab.getHeight() + 2 , lab.getWidth() + 2) , WINDOW_desctructor()) {
+InterfaceLabirinto::InterfaceLabirinto(std::pair<int,int> coordLeftUp  , int height , int width , labirinto &lab) : coordLeftUp(coordLeftUp) , size(height , width) , lab(lab), window(newpad(lab.getHeight() + 2 , lab.getWidth() + 2) , WINDOW_desctructor()) {
     this->atualizarMapa();
 }
 
@@ -51,24 +51,20 @@ void InterfaceLabirinto::atualizarMapa(){
             //attron(COLOR_PAIR(1));
             this->printaCaracter(linha[j]);
             if(linha[j] == BEGIN){
-                this->actualCoord = std::make_pair(j+1 , i+1);
+                this->actualCoord = std::make_pair(j , i);
             }
         }
     }
-
-
-    wgetch(this->window.get());
 }
 
 // Outline: Define a posição atual do labirinto. E printa o caracter, não atualiza a tela, necessário chamar
 // InterfaceLabirinto::refresh().
-void InterfaceLabirinto::definiPosicao(int y , int x  ,COLOR_MAPS color ){
+void InterfaceLabirinto::definiPosicao(std::pair<int,int> coord , COLOR_MAPS color ){
     wattron(this->window.get() , COLOR_PAIR(color));
-    wmove(this->window.get() , y+1 ,x+1);
-    this->actualCoord.first = x;
-    this->actualCoord.second = y;
-    this->printaCaracter(this->lab[y][x]);
-    wgetch(this->window.get());
+    wmove(this->window.get() , coord.first+1 ,coord.second+1);
+    this->actualCoord.first = coord.first;
+    this->actualCoord.second = coord.second;
+    this->printaCaracter(this->lab[coord.first][coord.second]);
 }
 
 //Outline: define a parte da tela que via ser mostrada tentando manter a posição atual no centro da tela,
@@ -77,25 +73,25 @@ void InterfaceLabirinto::definiPosicao(int y , int x  ,COLOR_MAPS color ){
 //que vai ser exibido o labirinto.
 void InterfaceLabirinto::refresh() {
     // variaveis que são usadas para  centralizar a posição atual.
-    int mh = this->size.second / 2;
-    int mw = this->size.first / 2;
+    int mh = this->size.first / 2;
+    int mw = this->size.second / 2;
     int cornerLeUpY = 0;
     int cornerLeUpX = 0;
     // aqui faz a verificação se na coordenada x atual está num ponto ond enão é possível centralizar porque
     // ele está muito proximo da origem, e depois verifica se está muito proximo do fim do labirinto
-    if((this->lab.getWidth()+2 > this->size.first) && (this->actualCoord.first - mw > 0)){//verificação se está no inicio
+    if((this->lab.getWidth()+2 > this->size.second) && (this->actualCoord.second - mw > 0)){//verificação se está no inicio
         cornerLeUpX = this->actualCoord.first - mw;
-        if((cornerLeUpX + this->size.first ) > (this->lab.getWidth()+2)){ // verificação se está no final.
-            cornerLeUpX = this->lab.getWidth() - this->size.first + 2;
+        if((cornerLeUpX + this->size.second ) > (this->lab.getWidth()+2)){ // verificação se está no final.
+            cornerLeUpX = this->lab.getWidth() - this->size.second + 2;
         }
     }
     // repete a mesma coisa da coordenada x só que para y.
-    if( (this->lab.getHeight()+2 > this->size.second) && (this->actualCoord.second - mh > 0) ){
-        cornerLeUpY = this->actualCoord.second - mh;
-        if((cornerLeUpY + this->size.second) > (this->lab.getHeight() + 2)){
-            cornerLeUpY -= this->lab.getHeight() - this->size.second + 2;
+    if( (this->lab.getHeight()+2 > this->size.first) && (this->actualCoord.first - mh > 0) ){
+        cornerLeUpY = this->actualCoord.first - mh;
+        if((cornerLeUpY + this->size.first) > (this->lab.getHeight() + 2)){
+            cornerLeUpY -= this->lab.getHeight() - this->size.first + 2;
         }
     }
     // faz a atualização do pad para escrever na janela.
-    prefresh(this->window.get() , cornerLeUpY , cornerLeUpX , this->coordLeftUp.second , this->coordLeftUp.first , this->coordLeftUp.second + this->size.second  -1, this->coordLeftUp.first + this->size.first - 1);
+    prefresh(this->window.get() , cornerLeUpY , cornerLeUpX , this->coordLeftUp.first , this->coordLeftUp.second , this->coordLeftUp.first + this->size.first  -1, this->coordLeftUp.second + this->size.second - 1);
 }

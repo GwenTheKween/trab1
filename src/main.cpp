@@ -11,11 +11,15 @@ int main(int argc, char **argv){
         return 1;
 	}
     InterfaceInit inicializador;
+    WINDOW *aux = newwin(1, COLS , LINES-1,0);
 	labirinto l(argv[1]);
-    InterfaceLabirinto lab(0 , 0 , LINES-5 , COLS, l);
+    InterfaceLabirinto lab({0,0} , LINES-5 , COLS, l);
     lab.refresh();
-    lab.definiPosicao(1 , 2 , GREEN_BLUE);
+    wgetch(aux);
+    lab.definiPosicao({47,2} , GREEN_BLUE);
     lab.refresh();
+    wrefresh(aux);
+    wgetch(aux);
 
 	l.print();
 	return 0;
