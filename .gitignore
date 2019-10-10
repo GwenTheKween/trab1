@@ -3,3 +3,4 @@ trab1
 .ycm*
 peda-session*
 .gdb_history
+vgcore*
