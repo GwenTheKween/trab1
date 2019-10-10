@@ -53,7 +53,8 @@ public:
 
     int getHeight();
     int getWidth();
-	bool isFree(int x, int y);
+	bool isFree(std::pair<int,int> coord);
+	bool wallsAround(std::pair<int,int> coord);
 
 	void setStart(std::pair<int, int> coord){map[coord.first][coord.second] = BEGIN;}
 	void setEnd(std::pair<int,int> coord){map[coord.first][coord.second] = END;}

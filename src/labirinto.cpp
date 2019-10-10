@@ -65,11 +65,11 @@ void labirinto::resize(int h, int w){
 	height = h;
 	width = w;
 	std::vector<MAP_INFO> tmp;
-	map.resize(h);
 	tmp.resize(w,FREE_SPACE);
-	for(int i=0; i<h; i++){
-		map[i] = tmp;
-	}
+	map.resize(h, tmp);
+////for(int i=0; i<h; i++){
+////	map[i] = tmp;
+////}
 }
 
 void labirinto::print(){
@@ -264,22 +264,40 @@ void labirinto::nova_geracao(int wallCount){
 		parede wallOrigin = walls[wallOriginIndex];
 
 		//decide para qual direção a nova parede sera criada
-		int whereInWall = rand() % wallOrigin.getLength();//a qual altura a nova parede sera criada
-		std::pair<int, int> newCoord;
+		//Se a parede escolhida for uma das 4 primeiras, eh necessario cuidar para que a coordenada final nao contenha -1 ou o valor maximo
+		int whereInWall;//a qual altura da parede sera criada a nova
+		if(wallOriginIndex < 4){
+			whereInWall = rand() % (wallOrigin.getLength() - 2)  + 1; //tira as 2 posicoes e começa uma a frente
+		}else{
+			whereInWall = rand() % wallOrigin.getLength();//do contrario, qualqer altura da parede pode ser usada
+		}
+		std::pair<int, int> startCoord, endCoord;
 		if(wallOrigin.getDirection() == VERTICAL){
-			newCoord = std::make_pair(	wallOrigin.getStart().first, 
+			startCoord = std::make_pair(	wallOrigin.getStart().first, 
 										whereInWall + wallOrigin.getStart().second);
 			int dir[2];
 			//A parede nova sera horizontal
 			//Primeiro checa se eh possivel criar uma parede para a esquerda
-			if(newCoord.first > 0){
+			if(startCoord.first > 0){
 				//calcula qual o tamanho maximo da parede nessa direcao. se for 1, nao eh possivel fazer a parede.
-				for(dir[0] = 1; isFree(newCoord.first - dir[0], newCoord.second); dir[0]++);
+				bool possible=true;
+				dir[0] = 0;
+				while(possible){
+					dir[0] ++;
+					endCoord.first = startCoord.first - dir[0];
+					possible = isFree(endCoord) && !wallsAround(endCoord);
+				}
 			}else dir[0] = 0;
 			//depois, checa se eh possivel criar uma parede para a direita;
-			if(newCoord.first < width){
+			if(startCoord.first < width){
 				//calcula qual o tamanho maximo da parede nessa direcao. se for 1, nao eh possivel fazer a parede.
-				for(dir[1] = 1; isFree(newCoord.first + dir[0], newCoord.second); dir[1]++);
+				bool possible = true;
+				dir[1] = 0;
+				while(possible){
+					dir[1] ++; //podemos ignorar o primeiro valor, pq ele sera parede mas isso nao influencia o resultado
+					endCoord.first = startCoord.first + dir[1];
+					possible = isFree(endCoord) && !wallsAround(endCoord);
+				}
 			}else dir[1] = 0;
 
 			int d;
@@ -297,27 +315,41 @@ void labirinto::nova_geracao(int wallCount){
 
 			if(d == 0){
 				int l = rand()%(dir[0] - 1) + 1;//garante que a parede tera tamanho pelo menos 1
-				std::pair<int,int> wallEnd(newCoord.first - l, newCoord.second);
-				walls.push_back(create_wall(newCoord,wallEnd));
+				endCoord.first = startCoord.first - l;
+				endCoord.second = startCoord.second;
+				walls.push_back(create_wall(startCoord,endCoord));
 			}
 			else{
 				int l = rand() % (dir[1] - 1) + 1;//garante que a parede tera tamanho pelo menos 1
-				std::pair<int,int> wallEnd(newCoord.first + l, newCoord.second);
-				walls.push_back(create_wall(newCoord, wallEnd));
+				endCoord.first = startCoord.first + l;
+				endCoord.second = startCoord.second;
+				walls.push_back(create_wall(startCoord, endCoord));
 			}
 		}else{
-			newCoord = std::make_pair(	wallOrigin.getStart().first + whereInWall,
+			startCoord = std::make_pair(	wallOrigin.getStart().first + whereInWall,
 										wallOrigin.getStart().second);
 			//A parede nvoa sera horizontal
 			int dir[2];
 			//primeiro checa se eh possivel criar uma parede para cima
-			if(newCoord.second > 0){
+			if(startCoord.second > 0){
 				//calcula o tamanho maximo da parede nessa direção. O tamanho maximo deve ser maior que 1
-				for(dir[0] = 1; isFree(newCoord.first, newCoord.second - dir[0]); dir[0]++);
+				bool possible = true;
+				dir[0] = 0;
+				while(possible){
+					dir[0] ++;
+					endCoord.first = startCoord.first - dir[0];
+					possible = isFree(endCoord) && !wallsAround(endCoord);
+				}
 			}else dir[0] = 0;
 			//depois checa se eh possivel criar a parede para baixo
-			if(newCoord.second < height){
-				for(dir[1] = 1; isFree(newCoord.first, newCoord.second + dir[1]); dir[1]++);
+			if(startCoord.second < height){
+				bool possible;
+				dir[1] = 0;
+				while(possible){
+					dir[1] ++;
+					endCoord.first = startCoord.first + dir[1];
+					possible = isFree(endCoord) && !wallsAround(endCoord);
+				}
 			}else dir[1] = 0;
 
 			int d;
@@ -335,12 +367,14 @@ void labirinto::nova_geracao(int wallCount){
 
 			if(d == 0){
 				int l = rand()%(dir[0] - 1) + 1; //garante um tamanho de pelo menos 1
-				std::pair<int, int> wallEnd(newCoord.first, newCoord.second - l);
-				walls.push_back(create_wall(newCoord, wallEnd));
+				endCoord.first = startCoord.first;
+				endCoord.second = startCoord.second - l;
+				walls.push_back(create_wall(startCoord, endCoord));
 			}else{
 				int l = rand()%(dir[1] - 1) + 1;
-				std::pair<int, int> wallEnd(newCoord.first, newCoord.second + l);
-				walls.push_back(create_wall(newCoord,wallEnd));
+				endCoord.first = startCoord.first;
+				endCoord.second = startCoord.second + l;
+				walls.push_back(create_wall(startCoord,endCoord));
 			}
 		}
 	}
@@ -354,9 +388,41 @@ int labirinto::getHeight(){
     return this->height;
 }
 
-bool labirinto::isFree(int x, int y){
-	if((x < 0) || (y < 0) || (x >= width) || (y >= height)) return false;
-	return ((*this)[std::make_pair(x,y)] == FREE_SPACE);
+bool labirinto::isFree(std::pair<int, int> coord){
+	if((coord.first < 0) || (coord.second < 0) || (coord.first >= width) || (coord.second >= height)) return false;
+	return ((*this)[std::make_pair(coord.first,coord.second)] == FREE_SPACE);
+}
+
+bool labirinto::wallsAround(std::pair<int, int> coord){
+	std::pair<int, int> check;
+	if(coord.first > 0){ //checa se ha alguma parede acima do local atual
+		check.first = coord.first - 1;
+		if(coord.second > 0){
+			check.second = coord.second - 1;
+			if((*this)[check] == WALL) return true;
+		}
+		if(coord.second < height-1){
+			check.second = coord.second + 1;
+			if((*this)[check] == WALL) return true;
+		}
+		check.second = coord.second;
+		if((*this)[check] == WALL) return true;
+	}
+	if(coord.first < width - 1){ // checa se tem alguma parede abaixo do local
+		check.first = coord.first + 1;
+		if(coord.second > 0){
+			check.second = coord.second - 1;
+			if((*this)[check] == WALL) return true;
+		}
+		if(coord.second < height - 1){
+			check.second = coord.second + 1;
+			if((*this)[check] == WALL) return true;
+		}
+		check.second = coord.second;
+		if((*this)[check] == WALL) return true;
+	}
+	//nao precisa checar na mesma linha, o resto do algoritmo ja faz isso
+	return false;
 }
 
 parede labirinto::create_wall(std::pair<int, int> start, std::pair<int, int> end){
@@ -367,6 +433,7 @@ parede labirinto::create_wall(std::pair<int, int> start, std::pair<int, int> end
 			map[start.first][y] = WALL;
 		}
 	}else{
+		newWall.print();
 		for(int x = newWall.getStart().first + 1; x < newWall.getEnd().first; x++){
 			map[x][start.second] = WALL;
 		}
