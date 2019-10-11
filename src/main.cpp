@@ -13,12 +13,12 @@ int main(int argc, char **argv){
     InterfaceInit inicializador;
     WINDOW *aux = newwin(1, COLS , LINES-1,0);
 	labirinto l(argv[1]);
-    InterfaceLabirinto lab({0,0} , LINES-5 , COLS, l);
-    lab.refresh();
+    InterfaceLabirinto lab({0,0} , LINES-5 , COLS, l); // cria o labirinto.
+    lab.refresh(); // escreve na tela.
     wgetch(aux);
-    lab.definiPosicao({47,3} , GREEN_BLUE);
-    lab.refresh();
-    wrefresh(aux);
+    lab.definiPosicao({47,3} , GREEN_BLUE); // define uma nova posição no lab
+    lab.refresh();// escreve na tela.
+    wrefresh(aux); // sem esse ele não tira o cursor do lab. Vou dar uma olhada nas confs do ncurses deve ser o echo da letra na tela
     wgetch(aux);
 
 	l.print();
