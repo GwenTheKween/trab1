@@ -333,7 +333,7 @@ void labirinto::nova_geracao(int wallCount){
 		}else{
 			startCoord = std::make_pair(	wallOrigin.getStart().first + whereInWall,
 										wallOrigin.getStart().second);
-			endCoord.first = startCoord.first;
+			endCoord.second = startCoord.second;
 			//A parede nvoa sera horizontal
 			int dir[2];
 			//primeiro checa se eh possivel criar uma parede para cima
@@ -349,7 +349,7 @@ void labirinto::nova_geracao(int wallCount){
 			}else dir[0] = 0;
 			//depois checa se eh possivel criar a parede para baixo
 			if(startCoord.second < height){
-				bool possible;
+				bool possible = true;
 				dir[1] = 0;
 				while(possible){
 					dir[1] ++;
@@ -446,5 +446,5 @@ parede labirinto::create_wall(std::pair<int, int> start, std::pair<int, int> end
 			map[x][start.second] = WALL;
 		}
 	}
-	return parede(start,end);
+	return newWall;
 }

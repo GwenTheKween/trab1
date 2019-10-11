@@ -21,6 +21,7 @@ int main(int argc, char **argv){
 		labirinto l(50,50);
 		l.nova_geracao(30);
 		l.print();
+		l.write_labirinto("6.map");
 		/*
 		printf("would you like to print it? If so enter the name, otherwise, enter no\n");
 		std::string name, no="no";
