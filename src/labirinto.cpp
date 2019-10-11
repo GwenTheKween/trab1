@@ -1,4 +1,5 @@
 #include "labirinto.h"
+#include <unistd.h>
 //=================================================================================================================
 //Funcoes internas, para facilitar a conversao.
 
@@ -65,11 +66,11 @@ void labirinto::resize(int h, int w){
 	height = h;
 	width = w;
 	std::vector<MAP_INFO> tmp;
-	map.resize(h);
 	tmp.resize(w,FREE_SPACE);
-	for(int i=0; i<h; i++){
-		map[i] = tmp;
-	}
+	map.resize(h, tmp);
+////for(int i=0; i<h; i++){
+////	map[i] = tmp;
+////}
 }
 
 void labirinto::print(){
@@ -82,7 +83,7 @@ void labirinto::print(){
 	}
 }
 
-void labirinto::write_labirinto(char* filename){
+void labirinto::write_labirinto(const char* filename){
 	FILE* output;
 	output = fopen(filename, "w");
 	if(! output){
@@ -234,10 +235,216 @@ void labirinto::gera_labirinto_manual(char* filename){
 	write_labirinto(filename);
 }
 
+void labirinto::nova_geracao(int wallCount){
+	//o inicio sempre estara no topo a esquerda, e o final no canto inferior esquerdo
+	std::pair<int,int> start(rand()%(width/5), rand()%(height/5)), end(rand()%(width/5) + 4*width/5, rand()%(height/5) + 4*height/5);
+
+	std::vector<parede> walls;
+
+	map[start.first][start.second] = BEGIN;
+	map[end.first][end.second] = END;
+
+	//gera 4 paredes para o contorno do mapa, das colunas -1 e w/h
+	//parede superior do mapa
+	walls.push_back(parede(-1,-1,width,-1));
+	//parede direita do mapa
+	walls.push_back(parede(width, -1, width, height));
+	//parede inferior do mapa
+	walls.push_back(parede(width, height, -1, height));
+	//parede esquerda do mapa
+	walls.push_back(parede(-1, height, -1, -1));
+
+	while(wallCount--){
+		//usleep(500000);
+		//system("clear");
+		//print();
+		/*
+		 *Outline do algoritmo: Escolha uma parede existente, e um ponto nessa parede. 
+		 *A partir desse ponto, escolhe outro aleatorio e cria uma parede entre esses 2
+		 */
+
+		//de qual parede a nova sera criada
+		int wallOriginIndex = rand() % walls.size();
+		parede wallOrigin = walls[wallOriginIndex];
+
+		//decide para qual direção a nova parede sera criada
+		//Se a parede escolhida for uma das 4 primeiras, eh necessario cuidar para que a coordenada final nao contenha -1 ou o valor maximo
+		int whereInWall;//a qual altura da parede sera criada a nova
+		if(wallOriginIndex < 4){
+			whereInWall = rand() % (wallOrigin.getLength() - 2)  + 1; //tira as 2 posicoes e começa uma a frente
+		}else{
+			whereInWall = rand() % wallOrigin.getLength();//do contrario, qualqer altura da parede pode ser usada
+		}
+		std::pair<int, int> startCoord, endCoord;
+		if(wallOrigin.getDirection() == VERTICAL){
+			startCoord = std::make_pair(	wallOrigin.getStart().first, 
+										whereInWall + wallOrigin.getStart().second);
+			endCoord.second = startCoord.second;
+			int dir[2];
+			//A parede nova sera horizontal
+			//Primeiro checa se eh possivel criar uma parede para a esquerda
+			if(startCoord.first > 0){
+				//calcula qual o tamanho maximo da parede nessa direcao. se for 1, nao eh possivel fazer a parede.
+				bool possible=true;
+				dir[0] = 0;
+				while(possible){
+					dir[0] ++;
+					endCoord.first = startCoord.first - dir[0];
+					possible = isFree(endCoord) && !wallsAround(endCoord);
+				}
+			}else dir[0] = 0;
+			//depois, checa se eh possivel criar uma parede para a direita;
+			if(startCoord.first < width){
+				//calcula qual o tamanho maximo da parede nessa direcao. se for 1, nao eh possivel fazer a parede.
+				bool possible = true;
+				dir[1] = 0;
+				while(possible){
+					dir[1] ++; //podemos ignorar o primeiro valor, pq ele sera parede mas isso nao influencia o resultado
+					endCoord.first = startCoord.first + dir[1];
+					possible = isFree(endCoord) && !wallsAround(endCoord);
+				}
+			}else dir[1] = 0;
+
+			int d;
+			//escolhe uma direcao para a nova parede
+			if((dir[0] <2) && (dir[1] < 2)){ //nenhuma direcao eh possivel
+				wallCount++;
+				continue;
+			}else if(dir[0] < 2){ // nao pode ir para esquerda
+				d = 1;
+			}else if(dir[1] < 2){ //nao pode ir para direita
+				d = 0;
+			}else{
+				d = rand()%2;
+			}
+
+			if(d == 0){
+				int l = rand()%(dir[0] - 1) + 1;//garante que a parede tera tamanho pelo menos 1
+				endCoord.first = startCoord.first - l;
+				endCoord.second = startCoord.second;
+				walls.push_back(create_wall(startCoord,endCoord));
+			}
+			else{
+				int l = rand() % (dir[1] - 1) + 1;//garante que a parede tera tamanho pelo menos 1
+				endCoord.first = startCoord.first + l;
+				endCoord.second = startCoord.second;
+				walls.push_back(create_wall(startCoord, endCoord));
+			}
+		}else{
+			startCoord = std::make_pair(	wallOrigin.getStart().first + whereInWall,
+										wallOrigin.getStart().second);
+			endCoord.second = startCoord.second;
+			//A parede nvoa sera horizontal
+			int dir[2];
+			//primeiro checa se eh possivel criar uma parede para cima
+			if(startCoord.second > 0){
+				//calcula o tamanho maximo da parede nessa direção. O tamanho maximo deve ser maior que 1
+				bool possible = true;
+				dir[0] = 0;
+				while(possible){
+					dir[0] ++;
+					endCoord.first = startCoord.first - dir[0];
+					possible = isFree(endCoord) && !wallsAround(endCoord);
+				}
+			}else dir[0] = 0;
+			//depois checa se eh possivel criar a parede para baixo
+			if(startCoord.second < height){
+				bool possible = true;
+				dir[1] = 0;
+				while(possible){
+					dir[1] ++;
+					endCoord.first = startCoord.first + dir[1];
+					possible = isFree(endCoord) && !wallsAround(endCoord);
+				}
+			}else dir[1] = 0;
+
+			int d;
+			//analisa quais opcoes de parede sao viaveis, e escolhe uma delas aleatoriamente (se possivel)
+			if((dir[0] < 2) && (dir[1] < 2)){//nenhuma direcao eh possivel, ABORT
+				wallCount ++;
+				continue;
+			}else if(dir[0] < 2){//nao pode ir para cima
+				d = 1;
+			}else if(dir[1] < 2){//nao pode ir para baixo
+				d = 0;
+			}else{
+				d = rand()%2;
+			}
+
+			if(d == 0){
+				int l = rand()%(dir[0] - 1) + 1; //garante um tamanho de pelo menos 1
+				endCoord.first = startCoord.first;
+				endCoord.second = startCoord.second - l;
+				walls.push_back(create_wall(startCoord, endCoord));
+			}else{
+				int l = rand()%(dir[1] - 1) + 1;
+				endCoord.first = startCoord.first;
+				endCoord.second = startCoord.second + l;
+				walls.push_back(create_wall(startCoord,endCoord));
+			}
+		}
+	}
+	for(int i = 0; i<walls.size();i++){
+		walls[i].print();
+	}
+}
+
 int labirinto::getWidth(){
     return this->width;
 }
 
 int labirinto::getHeight(){
     return this->height;
+}
+
+bool labirinto::isFree(std::pair<int, int> coord){
+	if((coord.first < 0) || (coord.second < 0) || (coord.first >= width) || (coord.second >= height)) return false;
+	return ((*this)[coord] == FREE_SPACE);
+}
+
+bool labirinto::wallsAround(std::pair<int, int> coord){
+	std::pair<int, int> check;
+	if(coord.first > 0){ //checa se ha alguma parede acima do local atual
+		check.first = coord.first - 1;
+		if(coord.second > 0){
+			check.second = coord.second - 1;
+			if((*this)[check] == WALL) return true;
+		}
+		if(coord.second < height-1){
+			check.second = coord.second + 1;
+			if((*this)[check] == WALL) return true;
+		}
+		check.second = coord.second;
+		if((*this)[check] == WALL) return true;
+	}
+	if(coord.first < width - 1){ // checa se tem alguma parede abaixo do local
+		check.first = coord.first + 1;
+		if(coord.second > 0){
+			check.second = coord.second - 1;
+			if((*this)[check] == WALL) return true;
+		}
+		if(coord.second < height - 1){
+			check.second = coord.second + 1;
+			if((*this)[check] == WALL) return true;
+		}
+		check.second = coord.second;
+		if((*this)[check] == WALL) return true;
+	}
+	//nao precisa checar na mesma linha, o resto do algoritmo ja faz isso
+	return false;
+}
+
+parede labirinto::create_wall(std::pair<int, int> start, std::pair<int, int> end){
+	parede newWall(start,end);
+
+	if(newWall.getDirection()== VERTICAL){
+		for(int y = newWall.getStart().second + 1; y < newWall.getEnd().second; y++){ //comeca com +1 pq se for +0 ja vai ter parede, ou out_of_bounds exception
+			map[start.first][y] = WALL;
+		}
+	}else{
+		for(int x = newWall.getStart().first + 1; x < newWall.getEnd().first; x++){
+			map[x][start.second] = WALL;
+		}
+	}
+	return newWall;
 }

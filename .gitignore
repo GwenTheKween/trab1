@@ -1,5 +1,7 @@
 trab1
 *.o
+*.d
 .ycm*
 peda-session*
 .gdb_history
+vgcore*
