@@ -16,7 +16,7 @@ int main(int argc, char **argv){
     InterfaceLabirinto lab({0,0} , LINES-5 , COLS, l);
     lab.refresh();
     wgetch(aux);
-    lab.definiPosicao({47,2} , GREEN_BLUE);
+    lab.definiPosicao({47,3} , GREEN_BLUE);
     lab.refresh();
     wrefresh(aux);
     wgetch(aux);
