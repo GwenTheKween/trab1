@@ -5,11 +5,11 @@
 int main(int argc, char **argv){
 	int height, width;
 //	srand(time(NULL));
-	if(argc == 2){
+	if(argc == 1){
 		//printf("uso: %s <arquivo>\n",argv[0]);
 		//ESTA AQUI PARA DEBUG
+		srand(0);
 		int h,w;
-		srand(atoi(argv[1]));
 		/*
 		printf("height and width?");
 		scanf(" %d %d",&h,&w);
@@ -20,7 +20,7 @@ int main(int argc, char **argv){
 		*/
 		labirinto l(50,50);
 		l.nova_geracao(30);
-		//l.print();
+		l.print();
 		/*
 		printf("would you like to print it? If so enter the name, otherwise, enter no\n");
 		std::string name, no="no";

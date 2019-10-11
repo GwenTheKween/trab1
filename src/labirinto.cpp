@@ -1,4 +1,5 @@
 #include "labirinto.h"
+#include <unistd.h>
 //=================================================================================================================
 //Funcoes internas, para facilitar a conversao.
 
@@ -254,6 +255,9 @@ void labirinto::nova_geracao(int wallCount){
 	walls.push_back(parede(-1, height, -1, -1));
 
 	while(wallCount--){
+		//usleep(500000);
+		//system("clear");
+		//print();
 		/*
 		 *Outline do algoritmo: Escolha uma parede existente, e um ponto nessa parede. 
 		 *A partir desse ponto, escolhe outro aleatorio e cria uma parede entre esses 2
@@ -275,6 +279,7 @@ void labirinto::nova_geracao(int wallCount){
 		if(wallOrigin.getDirection() == VERTICAL){
 			startCoord = std::make_pair(	wallOrigin.getStart().first, 
 										whereInWall + wallOrigin.getStart().second);
+			endCoord.second = startCoord.second;
 			int dir[2];
 			//A parede nova sera horizontal
 			//Primeiro checa se eh possivel criar uma parede para a esquerda
@@ -328,6 +333,7 @@ void labirinto::nova_geracao(int wallCount){
 		}else{
 			startCoord = std::make_pair(	wallOrigin.getStart().first + whereInWall,
 										wallOrigin.getStart().second);
+			endCoord.first = startCoord.first;
 			//A parede nvoa sera horizontal
 			int dir[2];
 			//primeiro checa se eh possivel criar uma parede para cima
@@ -378,6 +384,9 @@ void labirinto::nova_geracao(int wallCount){
 			}
 		}
 	}
+	for(int i = 0; i<walls.size();i++){
+		walls[i].print();
+	}
 }
 
 int labirinto::getWidth(){
@@ -390,7 +399,7 @@ int labirinto::getHeight(){
 
 bool labirinto::isFree(std::pair<int, int> coord){
 	if((coord.first < 0) || (coord.second < 0) || (coord.first >= width) || (coord.second >= height)) return false;
-	return ((*this)[std::make_pair(coord.first,coord.second)] == FREE_SPACE);
+	return ((*this)[coord] == FREE_SPACE);
 }
 
 bool labirinto::wallsAround(std::pair<int, int> coord){
@@ -433,7 +442,6 @@ parede labirinto::create_wall(std::pair<int, int> start, std::pair<int, int> end
 			map[start.first][y] = WALL;
 		}
 	}else{
-		newWall.print();
 		for(int x = newWall.getStart().first + 1; x < newWall.getEnd().first; x++){
 			map[x][start.second] = WALL;
 		}

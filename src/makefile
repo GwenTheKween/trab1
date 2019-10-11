@@ -1,5 +1,5 @@
 COMP = g++
-COMP_FLAGS = -c -g -O3
+COMP_FLAGS = -c -g -O0
 LINK_FLAGS = -o
 OUT_NAME = trab1
 SRC = $(wildcard *.cpp)
