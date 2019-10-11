@@ -1,13 +1,14 @@
 COMP = g++
-COMP_FLAGS = -c -g -O3
+COMP_FLAGS = -c -g
 LINK_FLAGS = -o
+LDFLAGS = -lncurses
 OUT_NAME = trab1
 SRC = $(wildcard *.cpp)
 OBJ = $(SRC:.cpp=.o)
 DEPS = $(SRC:.cpp=.d)
 
 all: $(OBJ) $(DEPS)
-	$(COMP) $(LINK_FLAGS) $(OUT_NAME) $(OBJ)
+	$(COMP) $(LINK_FLAGS) $(OUT_NAME) $(OBJ) $(LDFLAGS)
 
 clean:
 	rm $(OBJ) $(OUT_NAME)

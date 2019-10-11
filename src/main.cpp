@@ -1,4 +1,7 @@
 #include "labirinto.h"
+#include "interface_init.h"
+#include "interface_labirinto.h"
+
 
 int main(int argc, char **argv){
 	int height, width;
