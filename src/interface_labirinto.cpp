@@ -46,7 +46,7 @@ void InterfaceLabirinto::atualizarMapa(){
     // printa todas as posições labirintos.
     for(int i =0 ; i < this->lab.getHeight() ; i++){
         wmove(this->window.get() , i+1 , 1);
-        auto & linha = this->lab[i];
+        auto linha = this->lab[i];
         for(int j = 0 ; j < this->lab.getWidth() ; j++){
             //attron(COLOR_PAIR(1));
             this->printaCaracter(linha[j]);
