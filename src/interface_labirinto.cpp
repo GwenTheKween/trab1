@@ -51,7 +51,7 @@ void InterfaceLabirinto::atualizarMapa(){
             //attron(COLOR_PAIR(1));
             this->printaCaracter(linha[j]);
             if(linha[j] == BEGIN){
-                this->actualCoord = std::make_pair(j , i);
+                this->actualCoord = std::make_pair(i , j);
             }
         }
     }
@@ -89,7 +89,7 @@ void InterfaceLabirinto::refresh() {
     if( (this->lab.getHeight()+2 > this->size.first) && (this->actualCoord.first - mh > 0) ){
         cornerLeUpY = this->actualCoord.first - mh;
         if((cornerLeUpY + this->size.first) > (this->lab.getHeight() + 2)){
-            cornerLeUpY -= this->lab.getHeight() - this->size.first + 2;
+            cornerLeUpY = this->lab.getHeight() - this->size.first + 2;
         }
     }
     // faz a atualização do pad para escrever na janela.
