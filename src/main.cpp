@@ -1,6 +1,7 @@
 #include "labirinto.h"
 #include "interface_init.h"
 #include "interface_labirinto.h"
+#include "best_first_search.h"
 
 #include <iostream>
 #include <string>
@@ -45,11 +46,16 @@ int main(int argc, char **argv){
 			l.gera_labirinto_manual(argv[2]);
 			l.print();
 		}else if(argv[1][0] == '2'){//Opcao de criar labirinto automatico
-	//  	printf("digite numero de colunas e linhas\n");
-	//  	scanf("%d %d", &height, &width);
-			labirinto l( 50, 50);
-			l.nova_geracao(atoi(argv[2]));
-			l.print();
+		  	printf("digite numero de colunas e linhas o\n");
+		  	scanf("%d %d", &height, &width);
+			labirinto l( height, width);
+			//l.nova_geracao(atoi(argv[2]));
+			//l.print();
+			//
+			//------------------------------------
+			l.gera_labirinto_automatico(argv[2]);
+			Best_first a();
+			//l.print();
 		}else if(argv[1][0] == '3'){//Opcao de abrir um labirinto e rodar um algoritimo sobre ele
 			labirinto l(argv[2]);
 			l.print();
