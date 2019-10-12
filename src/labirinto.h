@@ -17,6 +17,8 @@ enum MAP_INFO{
 
 class labirinto{
 	int height, width;
+	int column_Begin, line_Begin;
+	int column_End, line_End;
 	std::vector<std::vector<MAP_INFO> > map;
 private:
 	void resize(int h,int w);
@@ -53,6 +55,10 @@ public:
 
     int getHeight();
     int getWidth();
+    	int getColumnBegin();
+	int getLineBegin();
+	int getColumnEnd();
+	int getLineEnd();
 	bool isFree(std::pair<int,int> coord);
 	bool wallsAround(std::pair<int,int> coord);
 
