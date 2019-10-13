@@ -9,7 +9,7 @@ typedef struct no no_t;
 
 struct no{
 	int line, column;
-	int weight;
+	double weight;
 	no_t* father;
 };
 
@@ -25,9 +25,9 @@ class Best_first : public Search{
 	std::vector<std::pair<int,int>> percursoLabirinto;
 	std::vector<no_t*> enderecosUsados;
 private:
-	void inclui_proximo_vertice(int nextColumn, int nextLine, int weight, no_t* father,
+	void inclui_proximo_vertice(int nextColumn, int nextLine, double weight, no_t* father,
 		std::priority_queue<no_t*, std::vector<no_t*>, compare_best_first>& caminhos);
-	bool check_start_end_wall(int column, int line);
+	bool check_start_wall(int column, int line);
 	void setCaminhoLabirinto(no_t* origem);
 public:
 	Best_first():map(0,0){}
