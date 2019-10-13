@@ -23,7 +23,10 @@ class Best_first : public Search{
 	labirinto map;
 	std::deque<std::pair<int,int>> seqVisitados;
 	std::vector<std::pair<int,int>> percursoLabirinto;
+	std::vector<no_t*> enderecosUsados;
 private:
+	void inclui_proximo_vertice(int nextColumn, int nextLine, int pound, no_t* father,
+		std::priority_queue<no_t*, std::vector<no_t*>, compare_best_first>& caminhos);
 	bool check_start_end_wall(int column, int line);
 	void setCaminhoLabirinto(no_t* origem);
 public:
