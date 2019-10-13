@@ -46,19 +46,20 @@ int main(int argc, char **argv){
 			l.gera_labirinto_manual(argv[2]);
 			l.print();
 		}else if(argv[1][0] == '2'){//Opcao de criar labirinto automatico
-		  	printf("digite numero de colunas e linhas o\n");
-		  	scanf("%d %d", &height, &width);
+		  //	printf("digite numero de colunas e linhas o\n");
+		  //	scanf("%d %d", &height, &width);
 			labirinto l( height, width);
-			//l.nova_geracao(atoi(argv[2]));
-			//l.print();
-			//
-			//------------------------------------
-			l.gera_labirinto_automatico(argv[2]);
-			Best_first a;
-			//l.print();
+			l.nova_geracao(atoi(argv[2]));
+			l.print();
 		}else if(argv[1][0] == '3'){//Opcao de abrir um labirinto e rodar um algoritimo sobre ele
 			labirinto l(argv[2]);
 			l.print();
+		}else if(argv[1][0] == '4'){
+			Best_first a;
+			labirinto l(argv[2]);
+			a.setMap(l);
+			l.print();
+			a.executar();
 		}
 	}
 	return 0;
