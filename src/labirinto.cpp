@@ -56,6 +56,13 @@ labirinto::labirinto(char* filename){
 			for(int j = 0; j<w; j++){
 				fscanf(input," %c",&c);
 				map[i][j] = charToMap_info(c);
+				if(map[i][j] == BEGIN){
+					line_Begin = j;
+					column_Begin = i;
+				}else if(map[i][j] == END){
+					line_End = j;
+					column_Begin = i;
+				}
 			}
 		}
 		fclose(input);
