@@ -19,7 +19,7 @@ struct compare_best_first{
 	}
 };
 
-class Best_first:public Search{
+class Best_first : public Search{
 	labirinto map;
 	std::deque<std::pair<int,int>> seqVisitados;
 	std::vector<std::pair<int,int>> percursoLabirinto;
@@ -32,7 +32,7 @@ public:
 	std::vector<std::pair<int,int>> executar();
 	
 	void setMap(labirinto &map);
-        const std::deque<std::pair<int,int>> &getSequenciaDeVisitados();
-        void reset();
+    const std::deque<std::pair<int,int>> &getSequenciaDeVisitados() const;
+    void reset();
 };
 #endif

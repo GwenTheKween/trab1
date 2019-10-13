@@ -54,7 +54,7 @@ int main(int argc, char **argv){
 			//
 			//------------------------------------
 			l.gera_labirinto_automatico(argv[2]);
-			Best_first a();
+			Best_first a;
 			//l.print();
 		}else if(argv[1][0] == '3'){//Opcao de abrir um labirinto e rodar um algoritimo sobre ele
 			labirinto l(argv[2]);

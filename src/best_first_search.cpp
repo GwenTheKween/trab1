@@ -4,6 +4,10 @@ bool Best_first::check_start_end_wall(int column, int line){
 	return (map[column][line] == END || map[column][line] == BEGIN || map[column][line] == WALL);
 }
 
+Best_first::~Best_first(){
+    //libera as coisas que foram malocadas
+}
+
 void inclui_proximo_vertice(int nextColumn, int nextLine, int pound, no_t* father,
 		std::priority_queue<no_t*, std::vector<no_t*>, compare_best_first>& caminhos,
 		std::vector<no_t*> enderecosUsados){
@@ -20,7 +24,7 @@ void Best_first::setMap(labirinto &map){
 	this->map = map;
 }
 
-const std::deque<std::pair<int,int>>& Best_first::getSequenciaDeVisitados(){
+const std::deque<std::pair<int,int>>& Best_first::getSequenciaDeVisitados() const{
 	return seqVisitados;
 }
 
