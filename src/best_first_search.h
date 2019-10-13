@@ -9,13 +9,13 @@ typedef struct no no_t;
 
 struct no{
 	int line, column;
-	int pound;
+	int weight;
 	no_t* father;
 };
 
 struct compare_best_first{
 	bool operator()(const no_t* v1, const no_t* v2) const{
-		return (v1->pound > v2->pound);
+		return (v1->weight > v2->weight);
 	}
 };
 
@@ -25,7 +25,7 @@ class Best_first : public Search{
 	std::vector<std::pair<int,int>> percursoLabirinto;
 	std::vector<no_t*> enderecosUsados;
 private:
-	void inclui_proximo_vertice(int nextColumn, int nextLine, int pound, no_t* father,
+	void inclui_proximo_vertice(int nextColumn, int nextLine, int weight, no_t* father,
 		std::priority_queue<no_t*, std::vector<no_t*>, compare_best_first>& caminhos);
 	bool check_start_end_wall(int column, int line);
 	void setCaminhoLabirinto(no_t* origem);

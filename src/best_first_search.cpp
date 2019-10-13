@@ -12,12 +12,12 @@ Best_first::~Best_first(){
 	enderecosUsados.clear();
 }
 
-void Best_first::inclui_proximo_vertice(int nextColumn, int nextLine, int pound, no_t* father,
+void Best_first::inclui_proximo_vertice(int nextColumn, int nextLine, int weight, no_t* father,
 		std::priority_queue<no_t*, std::vector<no_t*>, compare_best_first>& caminhos){
 	no_t* nextVert = (no_t*)malloc(sizeof(no_t));
 	nextVert->column = nextColumn;
 	nextVert->line = nextLine;
-	nextVert->pound = pound;
+	nextVert->weight = weight;
 	nextVert->father = father;
 	caminhos.push(nextVert);
 	enderecosUsados.push_back(nextVert);
