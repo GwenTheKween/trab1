@@ -16,7 +16,7 @@ public:
 	//quando for chamado, compara se a distancia do primeiro elemento eh menor que a distancia do segundo
 	bool operator() (const std::pair<pii,double> lhs, const std::pair<pii, double> rhs){
 		double d1 = distance(lhs), d2 = distance(rhs);
-		return d1 < d2;
+		return d1 > d2;
 	}
 
 	//metodo para calcular distancia entre o ponto passado e o fim
@@ -69,12 +69,13 @@ std::vector<pii > A_star::executar(){
 	while(toVisit.top().first != goal){
 		currCoord = toVisit.top().first;
 		currCost = toVisit.top().second;
+		printf("(%d,%d)\n",currCoord.first, currCoord.second);
 		toVisit.pop();
 		//se o vizinho ainda nao foi visitado, marca-lo como visitado setando seu antecedente, e adiciona-lo a fila
 		//Primeiro tentamos reduzir X e adicionar os pontos
 		if(currCoord.first > 0){ //se eh possivel reduzir o valor de X
 			if(currCoord.second > 0){ //se eh possivel reduzir o valor de Y
-				if(antecedentes[currCoord.first - 1][currCoord.second - 1] == unvisited){
+				if(antecedentes[currCoord.first - 1][currCoord.second - 1] == unvisited && map[currCoord.first - 1][currCoord.second - 1] != WALL){
 					antecedentes[currCoord.first - 1][currCoord.second - 1] = currCoord;
 					temp = std::make_pair(currCoord.first - 1, currCoord.second - 1);
 					//cria o novo item a ser inserido na lista; como o movimento eh diagonal, o custo eh sq2
@@ -83,8 +84,8 @@ std::vector<pii > A_star::executar(){
 				}
 			}
 
-			if(currCoord.second < map.getHeight() - 1){ // se eh possivel aumentar o valor de Y
-				if(antecedentes[currCoord.first - 1][currCoord.second + 1] == unvisited){
+			if(currCoord.second < map.getWidth() - 1){ // se eh possivel aumentar o valor de Y
+				if(antecedentes[currCoord.first - 1][currCoord.second + 1] == unvisited && map[currCoord.first - 1][currCoord.second + 1] != WALL){
 					antecedentes[currCoord.first - 1][currCoord.second + 1] = currCoord;
 					temp = std::make_pair(currCoord.first - 1, currCoord.second + 1);
 					//cria o novo item a ser inserido na lista; como o movimento eh diagonal, o custo eh sq2
@@ -93,7 +94,7 @@ std::vector<pii > A_star::executar(){
 				}
 			}
 
-			if(antecedentes[currCoord.first - 1][currCoord.second] == unvisited){
+			if(antecedentes[currCoord.first - 1][currCoord.second] == unvisited && map[currCoord.first - 1][currCoord.second] != WALL){
 				antecedentes[currCoord.first - 1][currCoord.second] = currCoord;
 				temp = std::make_pair(currCoord.first - 1, currCoord.second);
 				pqItem = std::make_pair(temp, currCost + 1);
@@ -102,9 +103,9 @@ std::vector<pii > A_star::executar(){
 		}
 
 		//Depois tentamos aumentar o X e adicionar os pontos
-		if(currCoord.first < map.getWidth() - 1){
+		if(currCoord.first < map.getHeight() - 1){
 			if(currCoord.second > 0){ //se eh possivel reduzir o valor de Y
-				if(antecedentes[currCoord.first + 1][currCoord.second - 1] == unvisited){
+				if(antecedentes[currCoord.first + 1][currCoord.second - 1] == unvisited && map[currCoord.first + 1][currCoord.second - 1] != WALL){
 					antecedentes[currCoord.first + 1][currCoord.second - 1] = currCoord;
 					temp = std::make_pair(currCoord.first + 1, currCoord.second - 1);
 					//cria o novo item a ser inserido na lista; como o movimento eh diagonal, o custo eh sq2
@@ -113,8 +114,8 @@ std::vector<pii > A_star::executar(){
 				}
 			}
 
-			if(currCoord.second < map.getHeight() - 1){ // se eh possivel aumentar o valor de Y
-				if(antecedentes[currCoord.first + 1][currCoord.second + 1] == unvisited){
+			if(currCoord.second < map.getWidth() - 1){ // se eh possivel aumentar o valor de Y
+				if(antecedentes[currCoord.first + 1][currCoord.second + 1] == unvisited && map[currCoord.first + 1][currCoord.second + 1] != WALL){
 					antecedentes[currCoord.first + 1][currCoord.second + 1] = currCoord;
 					temp = std::make_pair(currCoord.first + 1, currCoord.second + 1);
 					//cria o novo item a ser inserido na lista; como o movimento eh diagonal, o custo eh sq2
@@ -123,7 +124,7 @@ std::vector<pii > A_star::executar(){
 				}
 			}
 
-			if(antecedentes[currCoord.first + 1][currCoord.second] == unvisited){
+			if(antecedentes[currCoord.first + 1][currCoord.second] == unvisited && map[currCoord.first + 1][currCoord.second] != WALL){
 				antecedentes[currCoord.first + 1][currCoord.second] = currCoord;
 				temp = std::make_pair(currCoord.first + 1, currCoord.second);
 				pqItem = std::make_pair(temp, currCost + 1);
@@ -132,7 +133,7 @@ std::vector<pii > A_star::executar(){
 
 			//por fim, tentamos sem mover no eixo X
 			if(currCoord.second > 0){
-				if(antecedentes[currCoord.first][currCoord.second - 1] == unvisited){
+				if(antecedentes[currCoord.first][currCoord.second - 1] == unvisited && map[currCoord.first][currCoord.second - 1] != WALL){
 					antecedentes[currCoord.first][currCoord.second - 1] = currCoord;
 					temp = std::make_pair(currCoord.first, currCoord.second - 1);
 					//cria o novo item a ser inserido na lista; como o movimento eh diagonal, o custo eh sq2
@@ -141,8 +142,8 @@ std::vector<pii > A_star::executar(){
 				}
 			}
 
-			if(currCoord.second < map.getHeight()-1){
-				if(antecedentes[currCoord.first][currCoord.second + 1] == unvisited){
+			if(currCoord.second < map.getWidth()-1){
+				if(antecedentes[currCoord.first][currCoord.second + 1] == unvisited && map[currCoord.first][currCoord.second + 1] != WALL){
 					antecedentes[currCoord.first][currCoord.second + 1] = currCoord;
 					temp = std::make_pair(currCoord.first, currCoord.second + 1);
 					//cria o novo item a ser inserido na lista; como o movimento eh diagonal, o custo eh sq2

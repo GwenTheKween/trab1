@@ -10,10 +10,6 @@ void solve(labirinto& m){
 	A_star searcher(m);
 	std::vector<std::pair<int, int> >v;
 	v = searcher.executar();
-	for(auto it = v.rbegin(); it != v.rend(); it++){
-		printf("(%d,%d) ",it->first, it->second);
-	}
-	printf("\n");
 }
 
 int main(int argc, char **argv){
@@ -21,11 +17,16 @@ int main(int argc, char **argv){
 //	srand(time(NULL));
 	if(argc == 1){
 		//ESTA AQUI PARA DEBUG
+		/*
 		srand(0);
 		int h,w;
 		labirinto l(50,50);
 		l.nova_geracao(30);
 		l.print();
+		*/
+		labirinto m("../mapas/1.map");
+		m.print();
+		solve(m);
 		return 0;
 	}
 	else if(argc == 2){

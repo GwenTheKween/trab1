@@ -42,7 +42,7 @@ labirinto::labirinto(int h, int w)
 	resize(h,w);
 }
 
-labirinto::labirinto(char* filename){
+labirinto::labirinto(const char* filename){
 	FILE* input;
 	input = fopen(filename, "r");
 	if(! input){
