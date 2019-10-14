@@ -17,6 +17,7 @@ enum MAP_INFO{
 
 class labirinto{
 	int height, width;
+	std::pair<int, int> begin, end;
 	std::vector<std::vector<MAP_INFO> > map;
 private:
 	void resize(int h,int w);
@@ -56,8 +57,8 @@ public:
 	bool isFree(std::pair<int,int> coord);
 	bool wallsAround(std::pair<int,int> coord);
 
-	void setStart(std::pair<int, int> coord){map[coord.first][coord.second] = BEGIN;}
-	void setEnd(std::pair<int,int> coord){map[coord.first][coord.second] = END;}
+	void setStart(std::pair<int, int> coord);
+	void setEnd(std::pair<int,int> coord);
 	parede create_wall(std::pair<int, int> start, std::pair<int, int> end);
 
 	void print();

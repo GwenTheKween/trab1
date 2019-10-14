@@ -434,6 +434,16 @@ bool labirinto::wallsAround(std::pair<int, int> coord){
 	return false;
 }
 
+void labirinto::setStart(std::pair<int, int> coord){
+	map[coord.first][coord.second] = BEGIN;
+	begin = coord;
+}
+
+void labirinto::setEnd(std::pair<int,int> coord){
+	map[coord.first][coord.second] = END;
+	end = coord;
+}
+
 parede labirinto::create_wall(std::pair<int, int> start, std::pair<int, int> end){
 	parede newWall(start,end);
 
