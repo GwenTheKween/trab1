@@ -4,13 +4,18 @@
 class A_star:public Search{
 private:
 	labirinto& map;
+
+	std::vector<std::vector<std::pair<int, int> > > antecedentes;
+
+	std::deque<std::pair<int, int> > fixing_stupid_bad_idea;
 public:
-	A_star();
-	~A_star();
+	A_star(labirinto& m);
+	~A_star(){}
 
 	//Metodos herdados da classe base
-	void setMap(labirinto &map);
-	const std::deque<std::pair<int, int> > &getSequenciaDeVisitados();
+	void setMap(labirinto &map){}
+	//Nao tenho certeza do que fazer aqui
+	const std::deque<std::pair<int, int> > &getSequenciaDeVisitados()const {return fixing_stupid_bad_idea;}
 	std::vector<std::pair<int, int> > executar();
 	void reset();
 
