@@ -55,7 +55,14 @@ labirinto::labirinto(char* filename){
 		for(int i = 0; i<h; i++){
 			for(int j = 0; j<w; j++){
 				fscanf(input," %c",&c);
-				map[i][j] = charToMap_info(c);
+                MAP_INFO aux = charToMap_info(c);
+                if(aux == BEGIN){
+                    this->setStart({i ,j});
+                }else if(aux == END){
+                    this->setEnd({i,j});
+                }else{
+                    map[i][j] = aux;
+                }
 			}
 		}
 		fclose(input);
