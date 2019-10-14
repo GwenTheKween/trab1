@@ -69,7 +69,6 @@ std::vector<pii > A_star::executar(){
 	while(toVisit.top().first != goal){
 		currCoord = toVisit.top().first;
 		currCost = toVisit.top().second;
-		printf("(%d,%d)\n",currCoord.first, currCoord.second);
 		toVisit.pop();
 		//se o vizinho ainda nao foi visitado, marca-lo como visitado setando seu antecedente, e adiciona-lo a fila
 		//Primeiro tentamos reduzir X e adicionar os pontos

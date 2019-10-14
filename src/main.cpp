@@ -10,6 +10,10 @@ void solve(labirinto& m){
 	A_star searcher(m);
 	std::vector<std::pair<int, int> >v;
 	v = searcher.executar();
+	for(auto it = v.rbegin(); it != v.rend(); it++){
+		printf("(%d,%d) ",it->first, it->second);
+	}
+	printf("\n");
 }
 
 int main(int argc, char **argv){
