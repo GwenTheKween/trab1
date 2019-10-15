@@ -53,7 +53,8 @@ int main(int argc, char **argv){
 		}else if(argv[1][0] == '3'){//Opcao de abrir um labirinto e rodar um algoritimo sobre ele
 			labirinto l(argv[2]);
 			l.print();
-		}
+		}else if(argv[1][0] == '4'){ // opcao para fazer avaliacao dos algoritmos
+        }
 	}
 	return 0;
 }
