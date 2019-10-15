@@ -55,7 +55,14 @@ labirinto::labirinto(char* filename){
 		for(int i = 0; i<h; i++){
 			for(int j = 0; j<w; j++){
 				fscanf(input," %c",&c);
-				map[i][j] = charToMap_info(c);
+                MAP_INFO aux = charToMap_info(c);
+                if(aux == BEGIN){
+                    this->setStart({i ,j});
+                }else if(aux == END){
+                    this->setEnd({i,j});
+                }else{
+                    map[i][j] = aux;
+                }
 			}
 		}
 		fclose(input);
@@ -432,6 +439,16 @@ bool labirinto::wallsAround(std::pair<int, int> coord){
 	}
 	//nao precisa checar na mesma linha, o resto do algoritmo ja faz isso
 	return false;
+}
+
+void labirinto::setStart(std::pair<int, int> coord){
+	map[coord.first][coord.second] = BEGIN;
+	begin = coord;
+}
+
+void labirinto::setEnd(std::pair<int,int> coord){
+	map[coord.first][coord.second] = END;
+	end = coord;
 }
 
 parede labirinto::create_wall(std::pair<int, int> start, std::pair<int, int> end){
