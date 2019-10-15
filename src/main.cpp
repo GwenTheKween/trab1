@@ -42,11 +42,24 @@ int main(int argc, char **argv){
 			l.gera_labirinto_manual(argv[2]);
 			l.print();
 		}else if(argv[1][0] == '2'){//Opcao de criar labirinto automatico
-	//  	printf("digite numero de colunas e linhas\n");
-	//  	scanf("%d %d", &height, &width);
-			labirinto l( 50, 50);
-			l.nova_geracao(atoi(argv[2]));
-			l.print();
+			int flag, numWall;
+			srand(time(NULL));
+			for(int i = 0; i < 20; i++){
+				char filename[20];
+				sprintf(filename, "%d.map", i);
+
+				printf("Digite o numero de paredes:\n");
+				scanf("%d", &numWall);
+				labirinto l( 10, 10);
+				l.nova_geracao(numWall);
+				l.print();
+				printf("1:Escreve no arquivo, 0: criar outro\n");
+				if(scanf("%d",&flag) != EOF && flag == 1){//escreve o labirinto na saida de arquivo
+					l.write_labirinto(filename);
+				}else if(flag == 0){
+					i--;
+				}
+			}
 		}else if(argv[1][0] == '3'){//Opcao de abrir um labirinto e rodar um algoritimo sobre ele
 			labirinto l(argv[2]);
 			l.print();
