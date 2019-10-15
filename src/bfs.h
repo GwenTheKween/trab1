@@ -19,9 +19,9 @@ class bfsSearch : public Search{
 
         void setMap(labirinto &map);
 
-        const std::deque<std::pair<int,int>> &getSequenciaDeVisitados() const;
+        const std::deque<std::pair<int,int> > &getSequenciaDeVisitados() const;
 
-        std::vector<std::pair<int,int>> executar();
+        std::vector<std::pair<int,int> > executar();
 
         void reset();
 };
