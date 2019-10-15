@@ -1,21 +1,20 @@
-#ifndef __BFS__H__
-#define __BFS__H__ value
+#ifndef __DFS__H__
+#define __DFS__H__ value
 
 #include "search.h"
 #include "labirinto.h"
 
-#include <queue>
-#include <functional>
-
-class bfsSearch : public Search{
+class dfsSearch : public Search{
     labirinto *map;
     std::deque<std::pair< int , int > > visitados;
 
+    private:
+        bool dfsRercusiva( std::vector<std::vector< std::pair<int , int > > > &mapaVisitados , std::pair<int , int> atual , std::pair< int ,int > &fim);
 
     public:
 
-        bfsSearch();
-        ~bfsSearch();
+        dfsSearch();
+        ~dfsSearch();
 
         void setMap(labirinto &map);
 
@@ -27,4 +26,4 @@ class bfsSearch : public Search{
 };
 
 
-#endif /* ifndef __BFS__H__ */
+#endif /* ifndef __DFS__H__ */
