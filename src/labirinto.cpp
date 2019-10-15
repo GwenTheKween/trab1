@@ -55,14 +55,14 @@ labirinto::labirinto(const char* filename){
 		for(int i = 0; i<h; i++){
 			for(int j = 0; j<w; j++){
 				fscanf(input," %c",&c);
-                MAP_INFO aux = charToMap_info(c);
-                if(aux == BEGIN){
-                    this->setStart({i ,j});
-                }else if(aux == END){
-                    this->setEnd({i,j});
-                }else{
-                    map[i][j] = aux;
-                }
+				MAP_INFO aux = charToMap_info(c);
+				if(aux == BEGIN){
+				    this->setStart({i ,j});
+				}else if(aux == END){
+				    this->setEnd({i,j});
+				}else{
+				    map[i][j] = aux;
+				}
 			}
 		}
 		fclose(input);
@@ -464,4 +464,18 @@ parede labirinto::create_wall(std::pair<int, int> start, std::pair<int, int> end
 		}
 	}
 	return newWall;
+}
+
+int labirinto::getColumnBegin(){
+	return column_Begin;
+}
+int labirinto::getLineBegin(){
+	return line_Begin;
+}
+
+int labirinto::getColumnEnd(){
+	return column_End;
+}
+int labirinto::getLineEnd(){
+	return line_End;
 }
