@@ -1,6 +1,6 @@
 #include "labirinto.h"
 #include "interface_init.h"
-#include "interface_labirinto.h"
+#include "interface_geral.h"
 
 #include <iostream>
 #include <string>
@@ -9,32 +9,12 @@ int main(int argc, char **argv){
 	int height, width;
 //	srand(time(NULL));
 	if(argc == 1){
-		//printf("uso: %s <arquivo>\n",argv[0]);
-		//ESTA AQUI PARA DEBUG
-		srand(0);
-		int h,w;
-		/*
-		printf("height and width?");
-		scanf(" %d %d",&h,&w);
-		labirinto l(h,w);
-		printf("how many walls? ");
-		scanf(" %d",&h);
-		l.nova_geracao(h);
-		*/
-		labirinto l(50,50);
-		l.nova_geracao(30);
-		l.print();
-		l.write_labirinto("6.map");
-		/*
-		printf("would you like to print it? If so enter the name, otherwise, enter no\n");
-		std::string name, no="no";
-		std::cin >> name;
-		if(name != no){
-			name = "../mapas/" + name;
-			l.write_labirinto(name.c_str());
-		}
-		*/
-		return 0;
+        char aux;
+        std::cout << "por favor coloque o terminal em tela cheia e aperte uma tecla\n";
+        std::cin.read(&aux , 1);
+        InterfaceInit initNcurses;
+        interfaceGeral geral;
+        geral();
 	}
 
 	if(argc > 2){
