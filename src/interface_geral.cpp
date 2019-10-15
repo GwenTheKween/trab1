@@ -20,8 +20,10 @@ void interfaceGeral::operator()(){
     // usa * para não visitado e visitado usa ponto.
     // não mudar a cor do fundo muda a cor do ponto.
     WINDOW *menu = newwin(LINES - COMANDOS_ALTURA , MENU_LARGURA , 0 , COLS - MENU_LARGURA);
+    keypad(menu , TRUE);
+    noecho();
     bool labirintoIsSet = false;
-    std::array<std::string , 6> itens{"gera mapa" , "A*" , "bestSearch" , "BFS" , "DFS" , "Andar"};
+    std::array<std::string , 7> itens{"gera mapa" , "A*" , "bestSearch" , "BFS" , "DFS" , "Andar" , "Sair"};
     WINDOW *comandos = newwin(COMANDOS_ALTURA , COLS , LINES -COMANDOS_ALTURA , 0);
     labirinto *l = new labirinto(0,0);
     InterfaceLabirinto *iLab = new InterfaceLabirinto({0,0} ,LINES -COMANDOS_ALTURA , COLS -MENU_LARGURA , *l);
@@ -82,12 +84,57 @@ void interfaceGeral::operator()(){
     };
 
 
-    for(unsigned int i = 0 ; i < itens.size() ; i++){
+    int posicao_atual = 0;
+    {
+        auto &str = itens[posicao_atual];
+        wmove(menu,(LINES -COMANDOS_ALTURA)/2-2+posicao_atual , (MENU_LARGURA - str.size())/2 );
+        wattron(menu , COLOR_PAIR(BLACK_WHITE));
+        wprintw(menu,"%s" , itens[posicao_atual].c_str());
+        wattroff(menu , COLOR_PAIR(BLACK_WHITE));
+    }
+    bool continua = true;
+    for(unsigned int i = 1 ; i < itens.size() ; i++){
         auto &str = itens[i];
         wmove(menu,(LINES -COMANDOS_ALTURA)/2-2+i , (MENU_LARGURA - str.size())/2 );
         wprintw(menu,"%s" , itens[i].c_str());
     }
-
-    wrefresh(menu);
-    wgetch(menu);
+    while(continua){
+        int caracter = wgetch(menu);
+        {
+            auto &str = itens[posicao_atual];
+            wmove(menu,(LINES -COMANDOS_ALTURA)/2-2+posicao_atual , (MENU_LARGURA - str.size())/2 );
+            wprintw(menu,"%s" , itens[posicao_atual].c_str());
+        }
+        if(KEY_DOWN == caracter){
+            if(posicao_atual < 6)
+                posicao_atual++;
+        }else if(KEY_UP == caracter){
+            if(posicao_atual > 0)
+                posicao_atual--;
+        }else if(caracter == 10 || caracter == KEY_ENTER){
+            if(posicao_atual == 0){
+                geraLabirinto();
+            }else if(posicao_atual == 1){
+                executaA_star();
+            }else if(posicao_atual == 2){
+                executaBestFirstSearch();
+            }else if(posicao_atual == 3){
+                executaBFS();
+            }else if(posicao_atual == 4){
+                executaDFS();
+            }else if(posicao_atual == 5){
+                iLab->andarPeloLabirinto();
+            }else if(posicao_atual == 6){
+                continua = false;
+            }
+        }
+        {
+            auto &str = itens[posicao_atual];
+            wmove(menu,(LINES -COMANDOS_ALTURA)/2-2+posicao_atual , (MENU_LARGURA - str.size())/2 );
+            wattron(menu , COLOR_PAIR(BLACK_WHITE));
+            wprintw(menu,"%s" , itens[posicao_atual].c_str());
+            wattroff(menu , COLOR_PAIR(BLACK_WHITE));
+        }
+        wrefresh(menu);
+    }
 };
