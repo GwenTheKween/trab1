@@ -5,10 +5,14 @@
 
 
 // Outline: Ele define qual caracter deve ser usado e da as caracteríticas padrão do caracter.
-char InterfaceLabirinto::printaCaracter(MAP_INFO value){
+char InterfaceLabirinto::printaCaracter(MAP_INFO value , bool visitado ){
     char aux = 0;
     if(value ==  FREE_SPACE){
-        aux = '.';
+        if(visitado){
+            aux = '.';
+        }else{
+            aux = '*';
+        }
     }else if(value == WALL){
         wattron(this->window.get() , COLOR_PAIR(BLACK_WHITE));
         aux=' ';
@@ -25,6 +29,7 @@ char InterfaceLabirinto::printaCaracter(MAP_INFO value){
 
 
 InterfaceLabirinto::InterfaceLabirinto(std::pair<int,int> coordLeftUp  , int height , int width , labirinto &lab) : coordLeftUp(coordLeftUp) , size(height , width) , lab(lab), window(newpad(lab.getHeight() + 2 , lab.getWidth() + 2) , WINDOW_desctructor()) {
+    keypad(this->window.get() , TRUE);
     this->atualizarMapa();
 }
 
@@ -59,12 +64,12 @@ void InterfaceLabirinto::atualizarMapa(){
 
 // Outline: Define a posição atual do labirinto. E printa o caracter, não atualiza a tela, necessário chamar
 // InterfaceLabirinto::refresh().
-void InterfaceLabirinto::definiPosicao(std::pair<int,int> coord , COLOR_MAPS color ){
+void InterfaceLabirinto::definiPosicao(std::pair<int,int> coord , COLOR_MAPS color , bool visitado){
     wattron(this->window.get() , COLOR_PAIR(color));
     wmove(this->window.get() , coord.first+1 ,coord.second+1);
     this->actualCoord.first = coord.first;
     this->actualCoord.second = coord.second;
-    this->printaCaracter(this->lab[coord.first][coord.second]);
+    this->printaCaracter(this->lab[coord.first][coord.second] , visitado);
 }
 
 //Outline: define a parte da tela que via ser mostrada tentando manter a posição atual no centro da tela,
@@ -94,4 +99,45 @@ void InterfaceLabirinto::refresh() {
     }
     // faz a atualização do pad para escrever na janela.
     prefresh(this->window.get() , cornerLeUpY , cornerLeUpX , this->coordLeftUp.first , this->coordLeftUp.second , this->coordLeftUp.first + this->size.first  -1, this->coordLeftUp.second + this->size.second - 1);
+}
+
+
+void InterfaceLabirinto::andarPeloLabirinto(){
+    int cornerLeUpY = 0;
+    int cornerLeUpX = 0;
+
+    {
+        int mh = this->size.first / 2;
+        int mw = this->size.second / 2;
+        if((this->lab.getWidth()+2 > this->size.second) && (this->actualCoord.second - mw > 0)){//verificação se está no inicio
+            cornerLeUpX = this->actualCoord.first - mw;
+            if((cornerLeUpX + this->size.second ) > (this->lab.getWidth()+2)){ // verificação se está no final.
+                cornerLeUpX = this->lab.getWidth() - this->size.second + 2;
+            }
+        }
+        if( (this->lab.getHeight()+2 > this->size.first) && (this->actualCoord.first - mh > 0) ){
+            cornerLeUpY = this->actualCoord.first - mh;
+            if((cornerLeUpY + this->size.first) > (this->lab.getHeight() + 2)){
+                cornerLeUpY = this->lab.getHeight() - this->size.first + 2;
+            }
+        }
+    }
+    int caracter = 0;
+    while(caracter != 27){
+        caracter = wgetch(this->window.get());
+        if(KEY_LEFT == caracter){
+            if(cornerLeUpX > 0)
+                cornerLeUpX--;
+        }else if(KEY_DOWN == caracter){
+            if(cornerLeUpY < this->lab.getHeight() - this->size.first +2)
+                cornerLeUpY++;
+        }else if(KEY_UP == caracter){
+            if(cornerLeUpY > 0)
+                cornerLeUpY--;
+        }else if(KEY_RIGHT == caracter){
+            if(cornerLeUpX < this->lab.getWidth()-this->size.second +2)
+                cornerLeUpX++;
+        }
+        prefresh(this->window.get() , cornerLeUpY , cornerLeUpX , this->coordLeftUp.first , this->coordLeftUp.second , this->coordLeftUp.first + this->size.first  -1, this->coordLeftUp.second + this->size.second - 1);
+    }
 }

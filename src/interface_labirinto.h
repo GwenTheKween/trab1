@@ -30,7 +30,7 @@ class InterfaceLabirinto {
     private:
 
     //função que cuida de printar o caracter.
-    char printaCaracter(MAP_INFO value);
+    char printaCaracter(MAP_INFO value , bool visitado = false);
 
     public:
 
@@ -60,7 +60,7 @@ class InterfaceLabirinto {
      *  coord   -> coordenada da nova posição atual é uma coordenada na seguinte ordem (y,x).
      *  color   -> cor em que vai ser pintado a posição atual.
      */
-    void definiPosicao(std::pair<int,int> coord , COLOR_MAPS color);
+    void definiPosicao(std::pair<int,int> coord , COLOR_MAPS color , bool visitado = true);
 
     /*
      * Função para rescrever o mapa inteiro. (não marca os lugares visitados).
@@ -71,6 +71,12 @@ class InterfaceLabirinto {
      * Função para escrever o labirinto na tela de verdade.
      */
     void refresh();
+
+    /*
+     * função para mover pelo labirinto livremente.
+     */
+
+    void andarPeloLabirinto();
 
 
 
