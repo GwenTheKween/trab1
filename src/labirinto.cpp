@@ -465,17 +465,3 @@ parede labirinto::create_wall(std::pair<int, int> start, std::pair<int, int> end
 	}
 	return newWall;
 }
-
-int labirinto::getColumnBegin(){
-	return column_Begin;
-}
-int labirinto::getLineBegin(){
-	return line_Begin;
-}
-
-int labirinto::getColumnEnd(){
-	return column_End;
-}
-int labirinto::getLineEnd(){
-	return line_End;
-}

@@ -65,7 +65,7 @@ std::vector<std::pair<int,int>> Best_first::executar(){
 		}
 	}
 
-	inclui_proximo_vertice(map.getColumnBegin(), map.getLineBegin(), 0, NULL, caminhos);
+	inclui_proximo_vertice(map.getStart().second/*Coluna*/, map.getStart().first, 0, NULL, caminhos);
 	while(!caminhos.empty()){
 		vert = caminhos.top();
 		caminhos.pop();
