@@ -15,9 +15,7 @@ int main(int argc, char **argv){
         InterfaceInit initNcurses;
         interfaceGeral geral;
         geral();
-	}
-
-	if(argc > 2){
+	}else if(argc > 2){
 		if(argv[1][0] == '1'){//Opcao de criar labirinto manualmente
 			printf("digite numero de colunas e linhas\n");
 			scanf("%d %d", &height, &width);
