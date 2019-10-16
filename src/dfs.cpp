@@ -72,11 +72,13 @@ std::vector<std::pair<int,int> > dfsSearch::executar(){
     atual = fim;
 
     // cria o vetor de resposta.
-    while(atual != inicio){
-        resp.push_back(atual);
-        atual = mapaVisitados[atual.first][atual.second];
+    if(mapaVisitados[atual.first][atual.second] != auxNaoVisitado){
+        while(atual != inicio){
+            resp.push_back(atual);
+            atual = mapaVisitados[atual.first][atual.second];
+        }
+        resp.push_back(inicio);
     }
-    resp.push_back(inicio);
     return resp;
 }
 
