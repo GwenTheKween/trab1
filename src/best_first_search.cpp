@@ -49,6 +49,11 @@ void Best_first::setCaminhoLabirinto(no_t* origem){
 	}
 }
 
+int heuristic(std::pair<int,int> end, std::pair<int,int>current){
+	double dx = abs(current.first - end.first);//columns
+	double dy = abs(current.second - end.second);//lines
+	return sqrt(dx*dx + dy*dy);
+}
 
 std::vector<std::pair<int,int>> Best_first::executar(){ 
 	std::priority_queue<no_t*, std::vector<no_t*>, compare_best_first> caminhos;
@@ -58,6 +63,7 @@ std::vector<std::pair<int,int>> Best_first::executar(){
 	int height = map.getHeight(), width = map.getWidth();
 	char mapVisited[height][width];
 	no_t* vert;
+	std::pair<int,int> end = map.getEnd();
 
 	for(int i = 0; i < height; i++){
 		for(int j = 0; j < width; j++){
@@ -65,7 +71,8 @@ std::vector<std::pair<int,int>> Best_first::executar(){
 		}
 	}
 
-	inclui_proximo_vertice(map.getStart().first, map.getStart().second, 0, NULL, caminhos);
+
+	inclui_proximo_vertice(map.getStart().first, map.getStart().second, heuristic(end, map.getStart()), NULL, caminhos);
 	while(!caminhos.empty()){
 		vert = caminhos.top();
 		caminhos.pop();
@@ -77,42 +84,42 @@ std::vector<std::pair<int,int>> Best_first::executar(){
 
 			if(flagUp && !check_start_wall(vert->column+1, vert->line) 
 					&& mapVisited[vert->column+1][vert->line] != VISITED){
-				inclui_proximo_vertice(vert->column+1, vert->line, 1, vert, caminhos);
+				inclui_proximo_vertice(vert->column+1, vert->line, heuristic(end, {vert->column+1,vert->line}), vert, caminhos);
 				mapVisited[vert->column+1][vert->line] = VISITED;
 			}
 			if(flagDown && !check_start_wall(vert->column-1, vert->line) 
 					&& mapVisited[vert->column-1][vert->line] != VISITED){
-				inclui_proximo_vertice(vert->column-1, vert->line, 1, vert, caminhos);
+				inclui_proximo_vertice(vert->column-1, vert->line, heuristic(end, {vert->column-1,vert->line}), vert, caminhos);
 				mapVisited[vert->column-1][vert->line] = VISITED;
 			}
 			if(flagRight && !check_start_wall(vert->column, vert->line+1)
 					&& mapVisited[vert->column][vert->line+1] != VISITED){
-				inclui_proximo_vertice(vert->column, vert->line+1, 1, vert, caminhos);
+				inclui_proximo_vertice(vert->column, vert->line+1, heuristic(end, {vert->column, vert->line+1}), vert, caminhos);
 				mapVisited[vert->column][vert->line+1] = VISITED;
 			}
 			if(flagLeft && !check_start_wall(vert->column, vert->line-1)
 					&& mapVisited[vert->column][vert->line-1] != VISITED){
-				inclui_proximo_vertice(vert->column, vert->line-1, 1, vert, caminhos);
+				inclui_proximo_vertice(vert->column, vert->line-1, heuristic(end, {vert->column, vert->line-1}), vert, caminhos);
 				mapVisited[vert->column][vert->line-1] = VISITED;
 			}
 			if(flagUp && flagRight && !check_start_wall(vert->column+1, vert->line+1)
 					&& mapVisited[vert->column+1][vert->line+1] != VISITED){
-				inclui_proximo_vertice(vert->column+1, vert->line+1, sqrt(2), vert, caminhos);
+				inclui_proximo_vertice(vert->column+1, vert->line+1, heuristic(end, {vert->column+1, vert->line+1}), vert, caminhos);
 				mapVisited[vert->column+1][vert->line+1] = VISITED;
 			}
 			if(flagUp && flagLeft && !check_start_wall(vert->column+1, vert->line-1)
 					&& mapVisited[vert->column+1][vert->line-1] != VISITED){
-				inclui_proximo_vertice(vert->column+1, vert->line-1, sqrt(2), vert, caminhos);
+				inclui_proximo_vertice(vert->column+1, vert->line-1, heuristic(end, {vert->column+1, vert->line-1}), vert, caminhos);
 				mapVisited[vert->column+1][vert->line-1] = VISITED;
 			}
 			if(flagDown && flagRight && !check_start_wall(vert->column-1, vert->line+1)
 					&& mapVisited[vert->column-1][vert->line+1] != VISITED){
-				inclui_proximo_vertice(vert->column-1, vert->line+1, sqrt(2), vert, caminhos);
+				inclui_proximo_vertice(vert->column-1, vert->line+1, heuristic(end, {vert->column-1, vert->line+1}), vert, caminhos);
 				mapVisited[vert->column-1][vert->line+1] = VISITED;
 			}
 			if(flagDown && flagLeft && !check_start_wall(vert->column-1, vert->line-1)
 					&& mapVisited[vert->column-1][vert->line-1] != VISITED){
-				inclui_proximo_vertice(vert->column-1, vert->line-1, sqrt(2), vert, caminhos);
+				inclui_proximo_vertice(vert->column-1, vert->line-1, heuristic(end, {vert->column-1, vert->line-1}), vert, caminhos);
 				mapVisited[vert->column-1][vert->line-1] = VISITED;
 			}
 			mapVisited[vert->column][vert->line] = VISITED;
