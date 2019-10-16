@@ -24,7 +24,7 @@ void interfaceGeral::operator()(){
     keypad(menu , TRUE);
     noecho();
     bool labirintoIsSet = false;
-    std::array<std::string , 7> itens{"gera mapa" , "A*" , "bestSearch" , "BFS" , "DFS" , "Andar" , "Sair"};
+    std::array<std::string , 7> itens{"gera mapa" , "A*" , "best first" , "BFS" , "DFS" , "Andar" , "Sair"};
     WINDOW *comandos = newwin(COMANDOS_ALTURA , COLS , LINES -COMANDOS_ALTURA , 0);
     labirinto *l = new labirinto(0,0);
     InterfaceLabirinto *iLab = new InterfaceLabirinto({0,0} ,LINES -COMANDOS_ALTURA , COLS -MENU_LARGURA , *l);
