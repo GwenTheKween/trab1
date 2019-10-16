@@ -58,11 +58,13 @@ std::vector<std::pair<int,int> > bfsSearch::executar(){
         fila.pop();
     }
     // cria o vetor de resposta.
-    while(atual != inicio){
-        resp.push_back(atual);
-        atual = mapaVisitados[atual.first][atual.second];
+    if(atual == fim){
+        while(atual != inicio){
+            resp.push_back(atual);
+            atual = mapaVisitados[atual.first][atual.second];
+        }
+        resp.push_back(inicio);
     }
-    resp.push_back(inicio);
     return resp;
 }
 
