@@ -61,10 +61,6 @@ int main(int argc, char **argv){
 			l.print();
 			a.executar();
 		}
-	}else{
-		labirinto l(30,30);
-		l.nova_geracao(30);
-		l.print();
 	}
 	return 0;
 }
