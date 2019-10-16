@@ -75,9 +75,14 @@ class InterfaceLabirinto {
     /*
      * função para mover pelo labirinto livremente.
      */
-
     void andarPeloLabirinto();
 
+
+    /*
+     * Função para resetar a interface.
+     */
+
+    void reset();
 
 
 

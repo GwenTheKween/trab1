@@ -141,3 +141,7 @@ void InterfaceLabirinto::andarPeloLabirinto(){
         prefresh(this->window.get() , cornerLeUpY , cornerLeUpX , this->coordLeftUp.first , this->coordLeftUp.second , this->coordLeftUp.first + this->size.first  -1, this->coordLeftUp.second + this->size.second - 1);
     }
 }
+
+void InterfaceLabirinto::reset(){
+    this->atualizarMapa();
+}
