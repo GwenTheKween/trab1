@@ -31,7 +31,9 @@ std::vector<std::pair<int,int> > bfsSearch::executar(){
     std::pair<int,int> fim(this->map->getEnd());
     // marca que o atual chegou pelo atual. para não andar de novo aqui
     mapaVisitados[atual.first][atual.second] = atual;
-    while(atual != fim){
+    fila.push(atual);
+    while(atual != fim && fila.size()){
+        atual = fila.front();
         this->visitados.push_back(atual);
         // cria todas as coordenadas em volta e depois verifica quais são validas, que não foram visitadas e não é parede
         // só asism ele coloca na fila de busca.
@@ -54,7 +56,6 @@ std::vector<std::pair<int,int> > bfsSearch::executar(){
                 }
             }
         }
-        atual = fila.front();
         fila.pop();
     }
     // cria o vetor de resposta.
