@@ -2,6 +2,7 @@
 #include "interface_init.h"
 #include "interface_labirinto.h"
 #include "a_star.h"
+#include "avaliador.h"
 #include "best_first_search.h"
 
 #include <iostream>
@@ -48,18 +49,16 @@ int main(int argc, char **argv){
 		}else if(argv[1][0] == '2'){//Opcao de criar labirinto automatico
 		  //	printf("digite numero de colunas e linhas o\n");
 		  //	scanf("%d %d", &height, &width);
-			labirinto l( height, width);
+			labirinto l( 10, 10);
 			l.nova_geracao(atoi(argv[2]));
 			l.print();
 		}else if(argv[1][0] == '3'){//Opcao de abrir um labirinto e rodar um algoritimo sobre ele
 			labirinto l(argv[2]);
 			l.print();
 		}else if(argv[1][0] == '4'){
-			Best_first a;
-			labirinto l(argv[2]);
-			a.setMap(l);
-			l.print();
-			a.executar();
+            std::cout << "avaliador\n";
+            avaliador av;
+            av();
 		}
 	}
 	return 0;
