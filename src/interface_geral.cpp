@@ -2,6 +2,7 @@
 #include "interface_labirinto.h"
 #include "labirinto.h"
 #include "search.h"
+#include "a_star.h"
 #include "best_first_search.h"
 #include "dfs.h"
 #include "bfs.h"
@@ -74,6 +75,8 @@ void interfaceGeral::operator()(){
     };
     auto executaA_star = [&] () -> void {
         if(labirintoIsSet){
+            A_star a(*l);
+            executaLabirinto(&a);
         }
     };
     auto executaBestFirstSearch = [&] () -> void {
