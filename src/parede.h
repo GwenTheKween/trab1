@@ -47,6 +47,5 @@ public:
 	}
 
 	void print(){
-		printf("(%d,%d)->(%d,%d): %d\n",start.first,start.second,end.first,end.second,getLength());
 	}
 };
