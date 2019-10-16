@@ -388,10 +388,6 @@ void labirinto::nova_geracao(int wallCount){
 			}
 		}
 	}
-	for(int i=4; i<walls.size(); i++){
-		printf("%d: ",i-4);
-		walls[i].print();
-	}
 }
 
 int labirinto::getWidth(){

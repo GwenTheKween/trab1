@@ -3,6 +3,7 @@
 #include "interface_geral.h"
 #include "interface_labirinto.h"
 #include "a_star.h"
+#include "avaliador.h"
 #include "best_first_search.h"
 
 #include <iostream>
@@ -45,11 +46,9 @@ int main(int argc, char **argv){
 			labirinto l(argv[2]);
 			l.print();
 		}else if(argv[1][0] == '4'){
-			Best_first a;
-			labirinto l(argv[2]);
-			a.setMap(l);
-			l.print();
-			a.executar();
+            std::cout << "avaliador\n";
+            avaliador av;
+            av();
 		}
 	}
 	return 0;
