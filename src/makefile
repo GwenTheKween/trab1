@@ -1,6 +1,6 @@
 COMP = g++
 COMP_FLAGS = -c -g
-LINK_FLAGS = -o
+LINK_FLAGS = -lm -o
 LDFLAGS = -lncurses
 OUT_NAME = trab1
 SRC = $(wildcard *.cpp)

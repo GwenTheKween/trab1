@@ -42,7 +42,7 @@ labirinto::labirinto(int h, int w)
 	resize(h,w);
 }
 
-labirinto::labirinto(char* filename){
+labirinto::labirinto(const char* filename){
 	FILE* input;
 	input = fopen(filename, "r");
 	if(! input){
@@ -55,14 +55,14 @@ labirinto::labirinto(char* filename){
 		for(int i = 0; i<h; i++){
 			for(int j = 0; j<w; j++){
 				fscanf(input," %c",&c);
-                MAP_INFO aux = charToMap_info(c);
-                if(aux == BEGIN){
-                    this->setStart({i ,j});
-                }else if(aux == END){
-                    this->setEnd({i,j});
-                }else{
-                    map[i][j] = aux;
-                }
+				MAP_INFO aux = charToMap_info(c);
+				if(aux == BEGIN){
+				    this->setStart({i ,j});
+				}else if(aux == END){
+				    this->setEnd({i,j});
+				}else{
+				    map[i][j] = aux;
+				}
 			}
 		}
 		fclose(input);
@@ -262,9 +262,6 @@ void labirinto::nova_geracao(int wallCount){
 	walls.push_back(parede(-1, height, -1, -1));
 
 	while(wallCount--){
-		//usleep(500000);
-		//system("clear");
-		//print();
 		/*
 		 *Outline do algoritmo: Escolha uma parede existente, e um ponto nessa parede. 
 		 *A partir desse ponto, escolhe outro aleatorio e cria uma parede entre esses 2
@@ -340,7 +337,7 @@ void labirinto::nova_geracao(int wallCount){
 		}else{
 			startCoord = std::make_pair(	wallOrigin.getStart().first + whereInWall,
 										wallOrigin.getStart().second);
-			endCoord.second = startCoord.second;
+			endCoord.first = startCoord.first;
 			//A parede nvoa sera horizontal
 			int dir[2];
 			//primeiro checa se eh possivel criar uma parede para cima
@@ -350,7 +347,7 @@ void labirinto::nova_geracao(int wallCount){
 				dir[0] = 0;
 				while(possible){
 					dir[0] ++;
-					endCoord.first = startCoord.first - dir[0];
+					endCoord.second = startCoord.second - dir[0];
 					possible = isFree(endCoord) && !wallsAround(endCoord);
 				}
 			}else dir[0] = 0;
@@ -360,7 +357,7 @@ void labirinto::nova_geracao(int wallCount){
 				dir[1] = 0;
 				while(possible){
 					dir[1] ++;
-					endCoord.first = startCoord.first + dir[1];
+					endCoord.second = startCoord.second + dir[1];
 					possible = isFree(endCoord) && !wallsAround(endCoord);
 				}
 			}else dir[1] = 0;
@@ -391,7 +388,8 @@ void labirinto::nova_geracao(int wallCount){
 			}
 		}
 	}
-	for(int i = 0; i<walls.size();i++){
+	for(int i=4; i<walls.size(); i++){
+		printf("%d: ",i-4);
 		walls[i].print();
 	}
 }
