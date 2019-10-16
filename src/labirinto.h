@@ -43,7 +43,7 @@ public:
 	//Construtor da classe, chama o metodo de resize e prepara para gerar aleatoriamente ou pelo usuario
 	labirinto(int h, int w);
 	//Construtor da classe, chama resize e depois le do arquivo passado
-	labirinto(char* filename);
+	labirinto(const char* filename);
 	//Destrutor da classe, zera os valores que nao tem o proprio destrutor
 	~labirinto(){
 		height = 0;

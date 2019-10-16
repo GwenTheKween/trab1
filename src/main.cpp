@@ -1,9 +1,22 @@
 #include "labirinto.h"
 #include "interface_init.h"
 #include "interface_geral.h"
+#include "interface_labirinto.h"
+#include "a_star.h"
+#include "best_first_search.h"
 
 #include <iostream>
 #include <string>
+
+void solve(labirinto& m){
+	A_star searcher(m);
+	std::vector<std::pair<int, int> >v;
+	v = searcher.executar();
+	for(auto it = v.rbegin(); it != v.rend(); it++){
+		printf("(%d,%d) ",it->first, it->second);
+	}
+	printf("\n");
+}
 
 int main(int argc, char **argv){
 	int height, width;
@@ -23,14 +36,20 @@ int main(int argc, char **argv){
 			l.gera_labirinto_manual(argv[2]);
 			l.print();
 		}else if(argv[1][0] == '2'){//Opcao de criar labirinto automatico
-	//  	printf("digite numero de colunas e linhas\n");
-	//  	scanf("%d %d", &height, &width);
-			labirinto l( 50, 50);
+		  //	printf("digite numero de colunas e linhas o\n");
+		  //	scanf("%d %d", &height, &width);
+			labirinto l( 10, 10);
 			l.nova_geracao(atoi(argv[2]));
 			l.print();
 		}else if(argv[1][0] == '3'){//Opcao de abrir um labirinto e rodar um algoritimo sobre ele
 			labirinto l(argv[2]);
 			l.print();
+		}else if(argv[1][0] == '4'){
+			Best_first a;
+			labirinto l(argv[2]);
+			a.setMap(l);
+			l.print();
+			a.executar();
 		}
 	}
 	return 0;
