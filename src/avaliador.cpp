@@ -59,7 +59,7 @@ void avaliador::operator()(){
             best.setMap(l);
             bfs.setMap(l);
             dfs.setMap(l);
-            tempos[A_STAR].push_back(this->tempoDecorrido(&a_start));
+            tempos[A_STAR].push_back(this->tempoDecorrido(&a_star));
             tempos[BEST].push_back(this->tempoDecorrido(&best));
             tempos[BFS].push_back(this->tempoDecorrido(&bfs));
             tempos[DFS].push_back(this->tempoDecorrido(&dfs));
