@@ -31,6 +31,9 @@ void interfaceGeral::operator()(){
         bool para = true;
         auto caminhoFinal = busca->executar();
         auto caminhoPercorrido = busca->getSequenciaDeVisitados();
+        iLab->reset();
+        wprintw(comandos , "aperte qualquer tecla para dar mais um passo no algoritmo ou s para rodar todos os passos");
+        wrefresh(comandos);
         for(auto &it : caminhoPercorrido){
             iLab->definiPosicao(it , RED_BLACK);
             iLab->refresh();
@@ -43,13 +46,19 @@ void interfaceGeral::operator()(){
             iLab->definiPosicao(it , BLUE_BLACK);
             iLab->refresh();
         }
+        wmove(comandos , 0,0);
+        wclrtoeol(comandos );
         wrefresh(comandos);
-        wgetch(comandos);
     };
     auto geraLabirinto = [&] () -> void {
         int w, h;
+        echo();
         wprintw(comandos , "informe o tamanho do labirinto (<num> x <num>): ");
         wscanw(comandos , "%d x %d" , &w , &h);
+        noecho();
+        wmove(comandos , 0 , 0);
+        wclrtoeol(comandos);
+        wrefresh(comandos);
         // aqui gera o labirinto
         delete l;
         l = new labirinto((char*) "../mapas/6.map");
@@ -123,7 +132,12 @@ void interfaceGeral::operator()(){
             }else if(posicao_atual == 4){
                 executaDFS();
             }else if(posicao_atual == 5){
+                wprintw(comandos , "Aperte esc para voltar ao menu");
+                wrefresh(comandos);
                 iLab->andarPeloLabirinto();
+                wmove(comandos , 0,0);
+                wclrtoeol(comandos);
+                wrefresh(comandos);
             }else if(posicao_atual == 6){
                 continua = false;
             }
