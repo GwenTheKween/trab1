@@ -4,24 +4,15 @@
 
 int main(int argc, char **argv){
 	int height, width;
-//	srand(time(NULL));
-	if(argc == 1){
+	srand(time(NULL));
+	if(argc == 2){
 		//printf("uso: %s <arquivo>\n",argv[0]);
 		//ESTA AQUI PARA DEBUG
-		srand(0);
 		int h,w;
-		/*
-		printf("height and width?");
-		scanf(" %d %d",&h,&w);
-		labirinto l(h,w);
-		printf("how many walls? ");
-		scanf(" %d",&h);
-		l.nova_geracao(h);
-		*/
-		labirinto l(50,50);
+		srand(atoi(argv[0]));
+		labirinto l(30,30);
 		l.nova_geracao(30);
 		l.print();
-		l.write_labirinto("6.map");
 		/*
 		printf("would you like to print it? If so enter the name, otherwise, enter no\n");
 		std::string name, no="no";
@@ -33,8 +24,7 @@ int main(int argc, char **argv){
 		*/
 		return 0;
 	}
-
-	if(argc > 2){
+	else if(argc > 2){
 		if(argv[1][0] == '1'){//Opcao de criar labirinto manualmente
 			printf("digite numero de colunas e linhas\n");
 			scanf("%d %d", &height, &width);
@@ -51,6 +41,10 @@ int main(int argc, char **argv){
 			labirinto l(argv[2]);
 			l.print();
 		}
+	}else{
+		labirinto l(30,30);
+		l.nova_geracao(30);
+		l.print();
 	}
 	return 0;
 }
