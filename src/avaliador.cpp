@@ -55,18 +55,17 @@ void avaliador::operator()(){
             Best_first best;
             bfsSearch bfs;
             dfsSearch dfs;
-            //A_star a_star(l);
+            A_star a_star(l);
             best.setMap(l);
             bfs.setMap(l);
             dfs.setMap(l);
-            //tempos[A_STAR].push_back(this->tempoDecorrido(&a_start));
+            tempos[A_STAR].push_back(this->tempoDecorrido(&a_start));
             tempos[BEST].push_back(this->tempoDecorrido(&best));
             tempos[BFS].push_back(this->tempoDecorrido(&bfs));
             tempos[DFS].push_back(this->tempoDecorrido(&dfs));
         }
-/*        std::cout << "tempo A*\n";
- *        calculaInformacoes(tempos[A_STAR]);
-        */
+        std::cout << "tempo A*\n";
+        calculaInformacoes(tempos[A_STAR]);
         std::cout << "tempo Best First Search\n";
         calculaInformacoes(tempos[BEST]);
         std::cout << "tempo BFS\n";
