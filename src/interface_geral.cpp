@@ -52,17 +52,21 @@ void interfaceGeral::operator()(){
         wrefresh(comandos);
     };
     auto geraLabirinto = [&] () -> void {
-        int w, h;
+        int w, h , wallCount;
         echo();
         wprintw(comandos , "informe o tamanho do labirinto (<num> x <num>): ");
         wscanw(comandos , "%d x %d" , &w , &h);
+        mvwprintw(comandos , 0,0 ,"informe a quantidade de paredes: ");
+        wclrtoeol(comandos);
+        wscanw(comandos , "%d" , &wallCount);
         noecho();
         wmove(comandos , 0 , 0);
         wclrtoeol(comandos);
         wrefresh(comandos);
         // aqui gera o labirinto
         delete l;
-        l = new labirinto((char*) "../mapas/6.map");
+        l = new labirinto(h ,w );
+        l->nova_geracao(wallCount < 10 + 2*h/10 ? wallCount : 10 + 2*h/10);
         delete iLab;
         labirintoIsSet = true;
         iLab = new InterfaceLabirinto({0,0} ,LINES -1 , COLS -10 , *l);
