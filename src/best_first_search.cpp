@@ -69,46 +69,53 @@ std::vector<std::pair<int,int>> Best_first::executar(){
 	while(!caminhos.empty()){
 		vert = caminhos.top();
 		caminhos.pop();
-		mapVisited[vert->column][vert->line] = VISITED;
 		if(map[vert->column][vert->line] != END){
 			flagUp = (vert->column+1 < height);
 			flagDown = (vert->column-1 >= 0);
 			flagLeft = (vert->line-1 >= 0);
 			flagRight = (vert->line+1 < width);
 
-			//Uso ERROR como posicao visitada
 			if(flagUp && !check_start_wall(vert->column+1, vert->line) 
 					&& mapVisited[vert->column+1][vert->line] != VISITED){
 				inclui_proximo_vertice(vert->column+1, vert->line, 1, vert, caminhos);
+				mapVisited[vert->column+1][vert->line] = VISITED;
 			}
 			if(flagDown && !check_start_wall(vert->column-1, vert->line) 
 					&& mapVisited[vert->column-1][vert->line] != VISITED){
 				inclui_proximo_vertice(vert->column-1, vert->line, 1, vert, caminhos);
+				mapVisited[vert->column-1][vert->line] = VISITED;
 			}
 			if(flagRight && !check_start_wall(vert->column, vert->line+1)
 					&& mapVisited[vert->column][vert->line+1] != VISITED){
 				inclui_proximo_vertice(vert->column, vert->line+1, 1, vert, caminhos);
+				mapVisited[vert->column][vert->line+1] = VISITED;
 			}
 			if(flagLeft && !check_start_wall(vert->column, vert->line-1)
 					&& mapVisited[vert->column][vert->line-1] != VISITED){
 				inclui_proximo_vertice(vert->column, vert->line-1, 1, vert, caminhos);
+				mapVisited[vert->column][vert->line-1] = VISITED;
 			}
 			if(flagUp && flagRight && !check_start_wall(vert->column+1, vert->line+1)
 					&& mapVisited[vert->column+1][vert->line+1] != VISITED){
 				inclui_proximo_vertice(vert->column+1, vert->line+1, sqrt(2), vert, caminhos);
+				mapVisited[vert->column+1][vert->line+1] = VISITED;
 			}
 			if(flagUp && flagLeft && !check_start_wall(vert->column+1, vert->line-1)
 					&& mapVisited[vert->column+1][vert->line-1] != VISITED){
 				inclui_proximo_vertice(vert->column+1, vert->line-1, sqrt(2), vert, caminhos);
+				mapVisited[vert->column+1][vert->line-1] = VISITED;
 			}
 			if(flagDown && flagRight && !check_start_wall(vert->column-1, vert->line+1)
 					&& mapVisited[vert->column-1][vert->line+1] != VISITED){
 				inclui_proximo_vertice(vert->column-1, vert->line+1, sqrt(2), vert, caminhos);
+				mapVisited[vert->column-1][vert->line+1] = VISITED;
 			}
 			if(flagDown && flagLeft && !check_start_wall(vert->column-1, vert->line-1)
 					&& mapVisited[vert->column-1][vert->line-1] != VISITED){
 				inclui_proximo_vertice(vert->column-1, vert->line-1, sqrt(2), vert, caminhos);
+				mapVisited[vert->column-1][vert->line-1] = VISITED;
 			}
+			mapVisited[vert->column][vert->line] = VISITED;
 		}else if(map[vert->column][vert->line] == END){
 			setCaminhoLabirinto(vert);//Coloca em percursoLabirinto o caminho ateh a saida
 			return this->percursoLabirinto;
