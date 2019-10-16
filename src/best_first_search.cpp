@@ -114,4 +114,5 @@ std::vector<std::pair<int,int>> Best_first::executar(){
 			return this->percursoLabirinto;
 		}
 	}
+	return this->percursoLabirinto;
 }
