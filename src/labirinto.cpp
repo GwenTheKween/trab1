@@ -248,6 +248,8 @@ void labirinto::nova_geracao(int wallCount){
 
 	std::vector<parede> walls;
 
+    this->begin = {start.first , start.second};
+    this->end = {end.first , end.second};
 	map[start.first][start.second] = BEGIN;
 	map[end.first][end.second] = END;
 
