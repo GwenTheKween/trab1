@@ -16,16 +16,12 @@ Best_first::~Best_first(){
 	percursoLabirinto.clear();
 }
 
-void Best_first::inclui_proximo_vertice(int nextColumn, int nextLine, double weight, no_t* father,
-		std::priority_queue<no_t*, std::vector<no_t*>, compare_best_first>& caminhos){
-	no_t* nextVert = (no_t*)malloc(sizeof(no_t));
-	nextVert->column = nextColumn;
-	nextVert->line = nextLine;
-	nextVert->weight = weight;
-	nextVert->father = father;
-	caminhos.push(nextVert);
-	enderecosUsados.push_back(nextVert);
-	seqVisitados.push_back(std::pair<int, int>(nextColumn, nextLine));//Guarda os NO's visitados
+void Best_first::inclui_proximo_vertice( no_t& children, double weight, std::pair<int,int> father,
+                std::priority_queue<no_t, std::vector<no_t>, compare_best_first>& caminhos){
+        children.father = {father.first, father.second};
+        children.weight = weight;
+        caminhos.push(children);
+        seqVisitados.push_back(children.current);//Guarda os NO's visitados
 }
 
 void Best_first::setMap(labirinto &map){
@@ -41,12 +37,12 @@ void Best_first::reset(){
 	seqVisitados.clear();
 }
 
-void Best_first::setCaminhoLabirinto(no_t* origem){
-	no_t* atual = origem;
-	while(atual != NULL){
-		this->percursoLabirinto.push_back(std::pair<int,int>(atual->column, atual->line));
-		atual = atual->father;
-	}
+void Best_first::setCaminhoLabirinto(no_t way[][], no_t fim){
+	no_t atual = fim;
+	do{
+		this->percursoLabirinto.push_back(fim.current);
+		atual = way[fim.father.first][fim.father.second];
+	}while(atual.father != {-1,-1});//Ponto de parada, quando o ponto ver que o ponto de origem nao tem pai
 }
 
 int heuristic(std::pair<int,int> end, std::pair<int,int>current){
@@ -62,69 +58,78 @@ std::vector<std::pair<int,int>> Best_first::executar(){
 	char flagUp, flagDown, flagLeft, flagRight;
 	int height = map.getHeight(), width = map.getWidth();
 	char mapVisited[height][width];
-	no_t* vert;
+	no_t way[height][width];
 	std::pair<int,int> end = map.getEnd();
 
 	for(int i = 0; i < height; i++){
 		for(int j = 0; j < width; j++){
 			mapVisited[i][j] = NOT_VISITED;
+			way[i][j].current = {i,j}
+			way[i][j].father = {-1,-1};
 		}
 	}
 
-
-	inclui_proximo_vertice(map.getStart().first, map.getStart().second, heuristic(end, map.getStart()), NULL, caminhos);
+	inclui_proximo_vertice(way[getStart().first][map.getStart().second], heuristic(end, map.getStart()), caminhos);
 	while(!caminhos.empty()){
 		vert = caminhos.top();
 		caminhos.pop();
-		if(map[vert->column][vert->line] != END){
-			flagUp = (vert->column+1 < height);
-			flagDown = (vert->column-1 >= 0);
-			flagLeft = (vert->line-1 >= 0);
-			flagRight = (vert->line+1 < width);
+		if(map[vert.current.first][vert.current.second] != END){
+			flagUp = (vert.current.first+1 < height);
+			flagDown = (vert.current.first-1 >= 0);
+			flagLeft = (vert.current.second-1 >= 0);
+			flagRight = (vert.current.second+1 < width);
 
-			if(flagUp && !check_start_wall(vert->column+1, vert->line) 
-					&& mapVisited[vert->column+1][vert->line] != VISITED){
-				inclui_proximo_vertice(vert->column+1, vert->line, heuristic(end, {vert->column+1,vert->line}), vert, caminhos);
-				mapVisited[vert->column+1][vert->line] = VISITED;
+			if(flagUp && !check_start_wall(vert.current.first+1, vert.current.second) 
+					&& mapVisited[vert.current.first+1][vert.current.second] != VISITED){
+				inclui_proximo_vertice(way[vert.current.first+1][vert.current.second], 
+						heuristic(end, {vert.current.first+1,vert.current.second}), vert.current, caminhos);
+				mapVisited[vert.current.first+1][vert.current.second] = VISITED;
 			}
-			if(flagDown && !check_start_wall(vert->column-1, vert->line) 
-					&& mapVisited[vert->column-1][vert->line] != VISITED){
-				inclui_proximo_vertice(vert->column-1, vert->line, heuristic(end, {vert->column-1,vert->line}), vert, caminhos);
-				mapVisited[vert->column-1][vert->line] = VISITED;
+			if(flagDown && !check_start_wall(vert.current.first-1, vert.current.second) 
+					&& mapVisited[vert.current.first-1][vert.current.second] != VISITED){
+				inclui_proximo_vertice(way[vert.current.first-1][vert.current.second], 
+						heuristic(end, {vert.current.first-1,vert.current.second}), vert.current, caminhos);
+				mapVisited[vert.current.first-1][vert.current.second] = VISITED;
 			}
-			if(flagRight && !check_start_wall(vert->column, vert->line+1)
-					&& mapVisited[vert->column][vert->line+1] != VISITED){
-				inclui_proximo_vertice(vert->column, vert->line+1, heuristic(end, {vert->column, vert->line+1}), vert, caminhos);
-				mapVisited[vert->column][vert->line+1] = VISITED;
+			if(flagRight && !check_start_wall(vert.current.first, vert.current.second+1)
+					&& mapVisited[vert.current.first][vert.current.second+1] != VISITED){
+				inclui_proximo_vertice(map[vert.current.first][vert.current.second+1],
+						heuristic(end, {vert.current.first, vert.current.second+1}), vert.current, caminhos);
+				mapVisited[vert.current.first][vert.current.second+1] = VISITED;
 			}
-			if(flagLeft && !check_start_wall(vert->column, vert->line-1)
-					&& mapVisited[vert->column][vert->line-1] != VISITED){
-				inclui_proximo_vertice(vert->column, vert->line-1, heuristic(end, {vert->column, vert->line-1}), vert, caminhos);
-				mapVisited[vert->column][vert->line-1] = VISITED;
+			if(flagLeft && !check_start_wall(vert.current.first, vert.current.second-1)
+					&& mapVisited[vert.current.first][vert.current.second-1] != VISITED){
+				inclui_proximo_vertice(way[vert.current.first][vert.current.second-1],
+						heuristic(end, {vert.current.first, vert.current.second-1}), vert.current, caminhos);
+				mapVisited[vert.current.first][vert.current.second-1] = VISITED;
 			}
-			if(flagUp && flagRight && !check_start_wall(vert->column+1, vert->line+1)
-					&& mapVisited[vert->column+1][vert->line+1] != VISITED){
-				inclui_proximo_vertice(vert->column+1, vert->line+1, heuristic(end, {vert->column+1, vert->line+1}), vert, caminhos);
-				mapVisited[vert->column+1][vert->line+1] = VISITED;
+			if(flagUp && flagRight && !check_start_wall(vert.current.first+1, vert.current.second+1)
+					&& mapVisited[vert.current.first+1][vert.current.second+1] != VISITED){
+				inclui_proximo_vertice(way[vert.current.first+1][vert.current.second+1], 
+						heuristic(end, {vert.current.first+1, vert.current.second+1}), vert.current, caminhos);
+				mapVisited[vert.current.first+1][vert.current.second+1] = VISITED;
 			}
-			if(flagUp && flagLeft && !check_start_wall(vert->column+1, vert->line-1)
-					&& mapVisited[vert->column+1][vert->line-1] != VISITED){
-				inclui_proximo_vertice(vert->column+1, vert->line-1, heuristic(end, {vert->column+1, vert->line-1}), vert, caminhos);
-				mapVisited[vert->column+1][vert->line-1] = VISITED;
+			if(flagUp && flagLeft && !check_start_wall(vert.current.first+1, vert.current.second-1)
+					&& mapVisited[vert.current.first+1][vert.current.second-1] != VISITED){
+				inclui_proximo_vertice(way[vert.current.first+1][vert.current.second-1], 
+						heuristic(end, {vert.current.first+1, vert.current.second-1}), vert.current, caminhos);
+				mapVisited[vert.current.first+1][vert.current.second-1] = VISITED;
 			}
-			if(flagDown && flagRight && !check_start_wall(vert->column-1, vert->line+1)
-					&& mapVisited[vert->column-1][vert->line+1] != VISITED){
-				inclui_proximo_vertice(vert->column-1, vert->line+1, heuristic(end, {vert->column-1, vert->line+1}), vert, caminhos);
-				mapVisited[vert->column-1][vert->line+1] = VISITED;
+			if(flagDown && flagRight && !check_start_wall(vert.current.first-1, vert.current.second+1)
+					&& mapVisited[vert.current.first-1][vert.current.second+1] != VISITED){
+				inclui_proximo_vertice(way[vert.current.first-1][vert.current.second+1], 
+						heuristic(end, {vert.current.first-1, vert.current.second+1}), vert.current, caminhos);
+				mapVisited[vert.current.first-1][vert.current.second+1] = VISITED;
 			}
-			if(flagDown && flagLeft && !check_start_wall(vert->column-1, vert->line-1)
-					&& mapVisited[vert->column-1][vert->line-1] != VISITED){
-				inclui_proximo_vertice(vert->column-1, vert->line-1, heuristic(end, {vert->column-1, vert->line-1}), vert, caminhos);
-				mapVisited[vert->column-1][vert->line-1] = VISITED;
+			if(flagDown && flagLeft && !check_start_wall(vert.current.first-1, vert.current.second-1)
+					&& mapVisited[vert.current.first-1][vert.current.second-1] != VISITED){
+				inclui_proximo_vertice(way[vert.current.first-1][vert.current.second-1], 
+						heuristic(end, {vert.current.first-1, vert.current.second-1}), vert.current, caminhos);
+				mapVisited[vert.current.first-1][vert.current.second-1] = VISITED;
 			}
-			mapVisited[vert->column][vert->line] = VISITED;
-		}else if(map[vert->column][vert->line] == END){
-			setCaminhoLabirinto(vert);//Coloca em percursoLabirinto o caminho ateh a saida
+			mapVisited[vert.current.first][vert.current.second] = VISITED;
+		}else if(map[vert.current.first][vert.current.second] == END){
+			setCaminhoLabirinto(way, vert.current);//Coloca em percursoLabirinto o caminho ateh a saida
 			return this->percursoLabirinto;
 		}
 	}
