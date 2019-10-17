@@ -15,20 +15,26 @@
 avaliador::~avaliador(){}
 avaliador::avaliador(){}
 
-void calculaInformacoes(std::vector<uint64_t> &dados){
+void calculaInformacoes(std::vector<uint64_t> &dados , std::vector<uint64_t> &passos){
     double media = 0;
-    for(auto &it : dados){
-        media += it;
-        std::cout << it << "\n";
+    double mediaPassos = 0;
+    for(uint32_t i = 0 ; i < dados.size() ; i++){
+        media += dados[i];
+        mediaPassos += passos[i];
+        std::cout << dados[i] << " " << passos[i] <<  "\n";
     }
     media /= dados.size();
-    std::cout << "média : " << media;
+    mediaPassos /= dados.size();
     double variancia = 0;
-    for(auto &it : dados){
-        variancia += (it - media) * (it - media);
+    double varianciaPassos = 0;
+    for(uint32_t i = 0 ; i < dados.size() ; i++){
+        variancia += (dados[i] - media) * (dados[i] - media);
+        varianciaPassos += (passos[i] - mediaPassos) * (passos[i] - mediaPassos);
     }
     variancia /= (dados.size() -1);
-    std::cout << " variancia : " << variancia << " desvio padrão : " << sqrt(variancia) << "\n";
+    varianciaPassos /= (dados.size() -1);
+    std::cout << "média  tempo: " << media << " variancia : " << variancia << " desvio padrão : " << sqrt(variancia) << "\n";
+    std::cout << "média passos : " << mediaPassos << " variancia : " << varianciaPassos << " desvio padrão : " << sqrt(varianciaPassos) << "\n";
 }
 
 uint64_t avaliador::tempoDecorrido(Search *busca){
@@ -48,6 +54,7 @@ void avaliador::operator()(){
     };
     for(int size = 10 ; size < 101 ; size += 10){
         std::vector<std::vector<uint64_t> > tempos(QTD_ALG , std::vector<uint64_t>());
+        std::vector<std::vector<uint64_t> > passos(QTD_ALG , std::vector<uint64_t>());
         std::cout << "labirinto de tamanho " << size << " x " << size << "\n";
         for(int i = 0 ; i < 100 ; i++){
             labirinto l(size ,size);
@@ -61,18 +68,21 @@ void avaliador::operator()(){
             dfs.setMap(l);
             //tempos[A_STAR].push_back(this->tempoDecorrido(&a_star));
             tempos[BEST].push_back(this->tempoDecorrido(&best));
+            passos[BEST].push_back(best.getSequenciaDeVisitados().size());
             tempos[BFS].push_back(this->tempoDecorrido(&bfs));
+            passos[BFS].push_back(bfs.getSequenciaDeVisitados().size());
             tempos[DFS].push_back(this->tempoDecorrido(&dfs));
+            passos[DFS].push_back(dfs.getSequenciaDeVisitados().size());
         }
         std::cout.precision(17);
 /*        std::cout << "tempo A*\n";
         calculaInformacoes(tempos[A_STAR]);*/
         std::cout << "tempo Best First Search\n";
-        calculaInformacoes(tempos[BEST]);
+        calculaInformacoes(tempos[BEST] , passos[BEST]);
         std::cout << "tempo BFS\n";
-        calculaInformacoes(tempos[BFS]);
+        calculaInformacoes(tempos[BFS] , passos[BFS]);
         std::cout << "tempo DFS\n";
-        calculaInformacoes(tempos[DFS]);
+        calculaInformacoes(tempos[DFS] , passos[DFS]);
     }
 }
 
