@@ -47,7 +47,7 @@ void avaliador::operator()(){
         QTD_ALG,
     };
     for(int size = 10 ; size < 101 ; size += 10){
-        std::vector<std::vector<uint64_t>> tempos(QTD_ALG , std::vector<uint64_t>());
+        std::vector<std::vector<uint64_t> > tempos(QTD_ALG , std::vector<uint64_t>());
         std::cout << "labirinto de tamanho " << size << " x " << size << "\n";
         for(int i = 0 ; i < 100 ; i++){
             labirinto l(size ,size);
@@ -59,13 +59,14 @@ void avaliador::operator()(){
             best.setMap(l);
             bfs.setMap(l);
             dfs.setMap(l);
-            tempos[A_STAR].push_back(this->tempoDecorrido(&a_star));
+            //tempos[A_STAR].push_back(this->tempoDecorrido(&a_star));
             tempos[BEST].push_back(this->tempoDecorrido(&best));
             tempos[BFS].push_back(this->tempoDecorrido(&bfs));
             tempos[DFS].push_back(this->tempoDecorrido(&dfs));
         }
-        std::cout << "tempo A*\n";
-        calculaInformacoes(tempos[A_STAR]);
+        std::cout.precision(17);
+/*        std::cout << "tempo A*\n";
+        calculaInformacoes(tempos[A_STAR]);*/
         std::cout << "tempo Best First Search\n";
         calculaInformacoes(tempos[BEST]);
         std::cout << "tempo BFS\n";
