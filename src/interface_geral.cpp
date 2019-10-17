@@ -19,16 +19,23 @@ interfaceGeral::~interfaceGeral(){};
 
 
 void interfaceGeral::operator()(){
-    // usa * para não visitado e visitado usa ponto.
-    // não mudar a cor do fundo muda a cor do ponto.
+    // janela que contem o menu e suas configurações para teclas e echo de teclas digitadas.
     WINDOW *menu = newwin(LINES - COMANDOS_ALTURA , MENU_LARGURA , 0 , COLS - MENU_LARGURA);
     keypad(menu , TRUE);
     noecho();
+
+    // variavel para saber se a o mapa foi definido.
     bool labirintoIsSet = false;
+    //textos dos menus
     std::array<std::string , 7> itens{"gera mapa" , "A*" , "best first" , "BFS" , "DFS" , "Andar" , "Sair"};
+
+    // janela para entrada de comandos e saida de texto
     WINDOW *comandos = newwin(COMANDOS_ALTURA , COLS , LINES -COMANDOS_ALTURA , 0);
+
     labirinto *l = new labirinto(0,0);
     InterfaceLabirinto *iLab = new InterfaceLabirinto({0,0} ,LINES -COMANDOS_ALTURA , COLS -MENU_LARGURA , *l);
+
+    //função da busca
     auto executaLabirinto = [&] (Search *busca) -> void {
         bool para = true;
         auto caminhoFinal = busca->executar();
@@ -52,11 +59,12 @@ void interfaceGeral::operator()(){
         wclrtoeol(comandos );
         wrefresh(comandos);
     };
+    // função para gerar labirintos.
     auto geraLabirinto = [&] () -> void {
         int w, h , wallCount;
         echo();
         wprintw(comandos , "informe o tamanho do labirinto (<num> <num>): ");
-        wscanw(comandos , "%d %d" , &w , &h);
+        wscanw(comandos , "%d  %d" , &w , &h);
         mvwprintw(comandos , 0,0 ,"informe a quantidade de paredes: ");
         wclrtoeol(comandos);
         wscanw(comandos , "%d" , &wallCount);
@@ -73,6 +81,8 @@ void interfaceGeral::operator()(){
         iLab = new InterfaceLabirinto({0,0} ,LINES -1 , COLS -10 , *l);
         iLab->refresh();
     };
+
+    // funções para executar as buscas
     auto executaA_star = [&] () -> void {
         if(labirintoIsSet){
             A_star a(*l);
@@ -102,6 +112,8 @@ void interfaceGeral::operator()(){
     };
 
 
+    // código para escrever o menu, pela posicao_atual é definido qual menu está selecionado
+    // então ele é pintado diferente dos outros.
     int posicao_atual = 0;
     {
         auto &str = itens[posicao_atual];
@@ -123,13 +135,15 @@ void interfaceGeral::operator()(){
             wmove(menu,(LINES -COMANDOS_ALTURA)/2-2+posicao_atual , (MENU_LARGURA - str.size())/2 );
             wprintw(menu,"%s" , itens[posicao_atual].c_str());
         }
+        // aqui é definido o que cada tecla vai fazer no menu.
         if(KEY_DOWN == caracter){
             if(posicao_atual < 6)
                 posicao_atual++;
         }else if(KEY_UP == caracter){
             if(posicao_atual > 0)
                 posicao_atual--;
-        }else if(caracter == 10 || caracter == KEY_ENTER){
+        }else if(caracter == 10 || caracter == KEY_ENTER){// enter indica que um item do menu foi selecionado
+            // escolhe qual item do menu foi selecionado
             if(posicao_atual == 0){
                 geraLabirinto();
             }else if(posicao_atual == 1){
