@@ -4,6 +4,7 @@
 #include "labirinto.h"
 #include <queue>
 #include <cmath>
+#include <vector>
 
 typedef struct no no_t;
 
@@ -24,13 +25,14 @@ class Best_first : public Search{
 	std::deque<std::pair<int,int>> seqVisitados;
 	std::vector<std::pair<int,int>> percursoLabirinto;
 private:
-	void inclui_proximo_vertice( no_t& way, double weight, std::pair<int,int> father,
+	void inclui_proximo_vertice( no_t& children, double weight, std::pair<int,int>& father,
                 std::priority_queue<no_t, std::vector<no_t>, compare_best_first>& caminhos);
+
 
 	//void inclui_proximo_vertice(int nextColumn, int nextLine, double weight, no_t* father,
 	//	std::priority_queue<no_t*, std::vector<no_t*>, compare_best_first>& caminhos);
 	bool check_start_wall(int column, int line);
-	void setCaminhoLabirinto(no_t way[][], no_t fim);
+	void setCaminhoLabirinto(std::vector< std::vector<no_t> > way, no_t fim);
 public:
 	Best_first():map(0,0){}
 	~Best_first();
