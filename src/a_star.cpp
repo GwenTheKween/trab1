@@ -2,6 +2,8 @@
 #include "math.h"
 #include <queue>
 
+//acho que terminei o maldito arquivo
+
 //define esta aqui para acelerar a escrita do programa, e possivelmente melhorar a legibilidade
 #define pii std::pair<int, int>
 
