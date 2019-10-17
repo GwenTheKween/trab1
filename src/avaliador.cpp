@@ -74,8 +74,8 @@ void avaliador::operator()(){
             best.setMap(l);
             bfs.setMap(l);
             dfs.setMap(l);
-            //tempos[A_STAR].push_back(this->tempoDecorrido(&a_star));
-            //passos[A_STAR].push_nack(a_star.getSequenciaDeVisitados());
+            tempos[A_STAR].push_back(this->tempoDecorrido(&a_star));
+            passos[A_STAR].push_back(a_star.getSequenciaDeVisitados().size());
             tempos[BEST].push_back(this->tempoDecorrido(&best));
             passos[BEST].push_back(best.getSequenciaDeVisitados().size());
             tempos[BFS].push_back(this->tempoDecorrido(&bfs));
@@ -84,8 +84,8 @@ void avaliador::operator()(){
             passos[DFS].push_back(dfs.getSequenciaDeVisitados().size());
         }
         std::cout.precision(17);
-/*        std::cout << "tempo A*\n";
-        calculaInformacoes(tempos[A_STAR]);*/
+        std::cout << "tempo A*\n";
+        calculaInformacoes(tempos[A_STAR] , passos[A_STAR]);
         // printa os resultados.
         std::cout << "tempo Best First Search\n";
         calculaInformacoes(tempos[BEST] , passos[BEST]);

@@ -49,7 +49,21 @@ int main(int argc, char **argv){
             std::cout << "avaliador\n";
             avaliador av;
             av();
-		}
+		}else if(argv[1][0] == '5'){
+            for(int i = 0 ; i < 100 ; i++){
+                labirinto l(10,10);
+                l.nova_geracao(12);
+                l.print();
+                A_star a(l);
+                a.executar();
+                std::cerr << "novo lab\n";
+            }
+        }else if(argv[1][0] == '6'){
+            labirinto l(argv[2]);
+            A_star a(l);
+            a.executar();
+
+        }
 	}
 	return 0;
 }
