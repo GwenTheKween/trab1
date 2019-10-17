@@ -1,5 +1,7 @@
 #include "search.h"
 #include "labirinto.h"
+#include <list>
+#include <set>
 
 class A_star:public Search{
 private:
