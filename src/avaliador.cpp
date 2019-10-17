@@ -15,6 +15,9 @@
 avaliador::~avaliador(){}
 avaliador::avaliador(){}
 
+/*
+ * função que calcula a média, variancia e desvio dos tempo e quantidade de passos dado nos algoritmos do labirinto.
+ */
 void calculaInformacoes(std::vector<uint64_t> &dados , std::vector<uint64_t> &passos){
     double media = 0;
     double mediaPassos = 0;
@@ -37,7 +40,9 @@ void calculaInformacoes(std::vector<uint64_t> &dados , std::vector<uint64_t> &pa
     std::cout << "média passos : " << mediaPassos << " variancia : " << varianciaPassos << " desvio padrão : " << sqrt(varianciaPassos) << "\n";
 }
 
+// função que calcula o tempo de execução da busca
 uint64_t avaliador::tempoDecorrido(Search *busca){
+    // utliza a biblioteca chrono para calcular o tempo gasto para a execução do programa.
     std::chrono::time_point<std::chrono::high_resolution_clock> tStart(std::chrono::high_resolution_clock::now());
     busca->executar();
     std::chrono::time_point<std::chrono::high_resolution_clock> tEnd(std::chrono::high_resolution_clock::now());
@@ -52,10 +57,13 @@ void avaliador::operator()(){
         DFS,
         QTD_ALG,
     };
+    // esse for é para especificar o tamanho dos labirintos.
     for(int size = 10 ; size < 101 ; size += 10){
+        // vetor com os valores de cada execução do labirinto de tamanho size x size
         std::vector<std::vector<uint64_t> > tempos(QTD_ALG , std::vector<uint64_t>());
         std::vector<std::vector<uint64_t> > passos(QTD_ALG , std::vector<uint64_t>());
         std::cout << "labirinto de tamanho " << size << " x " << size << "\n";
+        // esse for é quem cria os labirintos e executa as buscas.
         for(int i = 0 ; i < 100 ; i++){
             labirinto l(size ,size);
             l.nova_geracao(8 + 2*size/10);
@@ -67,6 +75,7 @@ void avaliador::operator()(){
             bfs.setMap(l);
             dfs.setMap(l);
             //tempos[A_STAR].push_back(this->tempoDecorrido(&a_star));
+            //passos[A_STAR].push_nack(a_star.getSequenciaDeVisitados());
             tempos[BEST].push_back(this->tempoDecorrido(&best));
             passos[BEST].push_back(best.getSequenciaDeVisitados().size());
             tempos[BFS].push_back(this->tempoDecorrido(&bfs));
@@ -77,6 +86,7 @@ void avaliador::operator()(){
         std::cout.precision(17);
 /*        std::cout << "tempo A*\n";
         calculaInformacoes(tempos[A_STAR]);*/
+        // printa os resultados.
         std::cout << "tempo Best First Search\n";
         calculaInformacoes(tempos[BEST] , passos[BEST]);
         std::cout << "tempo BFS\n";

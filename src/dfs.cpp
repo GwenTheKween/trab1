@@ -23,6 +23,7 @@ bool dfsSearch::dfsRercusiva( std::vector<std::vector< std::pair<int , int > > >
     std::pair<int ,int> auxNaoVisitado(-1,-1);
     this->visitados.push_back(atual);
 
+    // marca todas as posições adjacentes a posição atual.
     std::vector<std::pair<int , int> > auxFilhos(8 , {0,0});
     auxFilhos[0] = {atual.first-1 , atual.second};
     auxFilhos[1] = {atual.first-1 , atual.second-1};
@@ -33,6 +34,7 @@ bool dfsSearch::dfsRercusiva( std::vector<std::vector< std::pair<int , int > > >
     auxFilhos[6] = {atual.first , atual.second+1};
     auxFilhos[7] = {atual.first-1 , atual.second+1};
 
+    // verifica se é possível 
     for(int i = 0; i < 8 ; i++){
         if( ( auxFilhos[i].first >= 0 && auxFilhos[i].first < this->map->getHeight() ) && ( auxFilhos[i].second >= 0 && auxFilhos[i].second < this->map->getWidth() ) ){
             if(mapaVisitados[auxFilhos[i].first ][ auxFilhos[i].second] == auxNaoVisitado){
