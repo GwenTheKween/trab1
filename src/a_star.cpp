@@ -1,6 +1,8 @@
 #include "a_star.h"
 #include "math.h"
 
+//acho que terminei o maldito arquivo
+
 //define esta aqui para acelerar a escrita do programa, e possivelmente melhorar a legibilidade
 #define pii std::pair<int, int>
 
