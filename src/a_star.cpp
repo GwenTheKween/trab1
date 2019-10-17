@@ -122,8 +122,6 @@ std::vector<pii > A_star::executar(){
 	while(!toVisit.empty() && toVisit.front().second != goal){
 		currCost = toVisit.front().first;
 		currCoord = toVisit.front().second;
-        //isso é para poder ver por onde o algoritmo está andando
-        this->fixing_stupid_bad_idea.push_back(currCoord);
 		toVisit.pop_front();
 		finished.insert(currCoord); //impede que coordenadas ja terminadas sejam exploradas de novo
 		//se o vizinho ainda nao foi visitado, marca-lo como visitado setando seu antecedente, e adiciona-lo a fila

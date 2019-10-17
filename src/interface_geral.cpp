@@ -55,8 +55,8 @@ void interfaceGeral::operator()(){
     auto geraLabirinto = [&] () -> void {
         int w, h , wallCount;
         echo();
-        wprintw(comandos , "informe o tamanho do labirinto (<num> x <num>): ");
-        wscanw(comandos , "%d x %d" , &w , &h);
+        wprintw(comandos , "informe o tamanho do labirinto (<num> <num>): ");
+        wscanw(comandos , "%d %d" , &w , &h);
         mvwprintw(comandos , 0,0 ,"informe a quantidade de paredes: ");
         wclrtoeol(comandos);
         wscanw(comandos , "%d" , &wallCount);
